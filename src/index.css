@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #2563eb;
-  --color-brand-dark: #1d4ed8;
-  --color-ink: #0b1220;
-  --color-mist: #f8fafc;
+  --color-brand: #1e5cc8;
+  --color-brand-dark: #16468f;
+  --color-ink: #0b1e3a;
+  --color-mist: #f3f7fb;
   --color-slate-text: #1e293b;
-  --color-accent: #38bdf8;
+  --color-accent: #34d399;
   --font-display: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
@@ -31,7 +31,7 @@ body {
 
 /* Subtle dotted grid for hero / dark sections */
 .bg-grid-light {
-  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.10) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(30, 92, 200, 0.10) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 .bg-grid-dark {
@@ -68,8 +68,8 @@ body {
 }
 .field::placeholder { color: #94a3b8; }
 .field:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #1e5cc8;
+  box-shadow: 0 0 0 3px rgba(30, 92, 200, 0.15);
 }
 .field-error {
   border-color: #dc2626;

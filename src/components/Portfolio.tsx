@@ -24,7 +24,7 @@ function DashboardMock() {
       </div>
       <div className="p-4 sm:p-5">
         <div className="flex items-center justify-between">
-          <p className="text-[13px] font-bold text-[#0B1220]">Operations Overview</p>
+          <p className="text-[13px] font-bold text-[#0B1E3A]">Operations Overview</p>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Live
           </span>
@@ -38,15 +38,15 @@ function DashboardMock() {
             const Icon = c.icon;
             return (
               <div key={c.label} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <Icon className="h-4 w-4 text-[#2563EB]" />
+                <Icon className="h-4 w-4 text-[#1E5CC8]" />
                 <p className="mt-2 text-[16px] font-extrabold text-slate-300">—</p>
                 <p className="text-[10.5px] font-medium text-slate-400">{c.label}</p>
               </div>
             );
           })}
         </div>
-        <div className="mt-3 overflow-hidden rounded-lg border border-slate-200">
-          <table className="w-full text-left text-[11.5px]">
+        <div className="mt-3 overflow-x-auto rounded-lg border border-slate-200">
+          <table className="w-full min-w-[300px] text-left text-[11.5px]">
             <thead>
               <tr className="bg-slate-50 text-slate-500">
                 <th className="px-3 py-2 font-semibold">Vehicle</th>
@@ -55,7 +55,7 @@ function DashboardMock() {
               </tr>
             </thead>
             <tbody className="text-slate-500">
-              <tr className="border-t border-slate-100"><td className="px-3 py-2">Entry record</td><td className="px-3 py-2">Mill A</td><td className="px-3 py-2"><span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-semibold text-[#2563EB]">Inside</span></td></tr>
+              <tr className="border-t border-slate-100"><td className="px-3 py-2">Entry record</td><td className="px-3 py-2">Mill A</td><td className="px-3 py-2"><span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10px] font-semibold text-[#1E5CC8]">Inside</span></td></tr>
               <tr className="border-t border-slate-100"><td className="px-3 py-2">Exit record</td><td className="px-3 py-2">Mill B</td><td className="px-3 py-2"><span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">Exited</span></td></tr>
               <tr className="border-t border-slate-100"><td className="px-3 py-2">Stock update</td><td className="px-3 py-2">Mill A</td><td className="px-3 py-2"><span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">Synced</span></td></tr>
             </tbody>
@@ -74,8 +74,8 @@ export default function Portfolio() {
     <section id="work" className="bg-white py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-2xl">
-          <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">Our Work</p>
-          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
+          <p className="text-[12px] font-bold tracking-[0.14em] text-[#1E5CC8] uppercase">Our Work</p>
+          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1E3A] sm:text-[38px] sm:leading-[1.15]">
             Solutions We&apos;ve Worked On
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
@@ -91,8 +91,8 @@ export default function Portfolio() {
                 <span key={t} className="rounded-full bg-slate-100 px-3 py-1 text-[11.5px] font-semibold text-slate-600">{t}</span>
               ))}
             </div>
-            <h3 className="mt-4 flex items-start gap-2.5 font-[Manrope] text-[24px] font-extrabold leading-snug tracking-tight text-[#0B1220]">
-              <Factory className="mt-1 h-6 w-6 shrink-0 text-[#2563EB]" aria-hidden="true" />
+            <h3 className="mt-4 flex items-start gap-2.5 font-[Manrope] text-[24px] font-extrabold leading-snug tracking-tight text-[#0B1E3A]">
+              <Factory className="mt-1 h-6 w-6 shrink-0 text-[#1E5CC8]" aria-hidden="true" />
               Rice Mill Operations Management System
             </h3>
             <p className="mt-3 text-[15.5px] leading-relaxed text-slate-600">
@@ -102,7 +102,7 @@ export default function Portfolio() {
             <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
               {FEATURES.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-[14px] font-medium text-slate-700">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[#2563EB]">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[#1E5CC8]">
                     <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
                   </span>
                   {f}
@@ -111,8 +111,8 @@ export default function Portfolio() {
             </ul>
             <div className="mt-auto pt-8">
               <a
-                href="#contact"
-                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 text-[14px] font-semibold text-[#0B1220] transition-colors hover:border-[#2563EB] hover:text-[#2563EB]"
+                href="#/contact"
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 text-[14px] font-semibold text-[#0B1E3A] transition-colors hover:border-[#1E5CC8] hover:text-[#1E5CC8]"
               >
                 Discuss a Similar System
               </a>

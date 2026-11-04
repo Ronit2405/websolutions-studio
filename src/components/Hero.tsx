@@ -5,33 +5,33 @@ const trustPoints = ["Custom-built solutions", "Business-first approach", "Long-
 
 export default function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden bg-[#F8FAFC] pt-[72px]">
+    <section id="home" className="relative overflow-hidden bg-[#F3F7FB] pt-[72px]">
       <div className="bg-grid-light pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-2 lg:gap-14 lg:py-24">
           {/* Copy */}
           <div className="reveal">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold tracking-wide text-[#2563EB] uppercase">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#38BDF8]" aria-hidden="true" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-1.5 text-[12px] font-semibold tracking-wide text-[#1E5CC8] uppercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" aria-hidden="true" />
               Digital Solutions Studio
             </span>
-            <h1 className="mt-5 font-[Manrope] text-[38px] font-extrabold leading-[1.08] tracking-tight text-[#0B1220] sm:text-[48px] lg:text-[54px]">
-              Build <span className="text-[#2563EB]">Smarter.</span> Work Better. Grow Faster.
+            <h1 className="mt-5 font-[Manrope] text-[38px] font-extrabold leading-[1.08] tracking-tight text-[#0B1E3A] sm:text-[48px] lg:text-[54px]">
+              Build <span className="text-[#1E5CC8]">Smarter.</span> Work Better. Grow Faster.
             </h1>
             <p className="mt-5 max-w-xl text-[16.5px] leading-relaxed text-slate-600 sm:text-[17.5px]">
               We help businesses go digital with professional websites, intelligent automation and custom AI-powered solutions.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4ED8] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                href="#/services"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1E5CC8] px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-[#16468F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E5CC8] focus-visible:ring-offset-2"
               >
                 Explore Our Services
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
               <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3.5 text-[15px] font-semibold text-[#0B1220] transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                href="#/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3.5 text-[15px] font-semibold text-[#0B1E3A] transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E5CC8] focus-visible:ring-offset-2"
               >
                 Discuss Your Project
               </a>
@@ -39,7 +39,7 @@ export default function Hero() {
             <ul className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2">
               {trustPoints.map((t) => (
                 <li key={t} className="flex items-center gap-1.5 text-[13.5px] font-medium text-slate-600">
-                  <CheckCircle2 className="h-4 w-4 text-[#2563EB]" aria-hidden="true" />
+                  <CheckCircle2 className="h-4 w-4 text-[#1E5CC8]" aria-hidden="true" />
                   {t}
                 </li>
               ))}
@@ -63,15 +63,15 @@ export default function Hero() {
                 <p className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">What we build</p>
                 <ul className="mt-2.5 space-y-2">
                   <li className="flex items-center gap-2.5 text-[13.5px] font-medium text-slate-700">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#2563EB]"><Workflow className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#1E5CC8]"><Workflow className="h-4 w-4" aria-hidden="true" /></span>
                     Websites &amp; web applications
                   </li>
                   <li className="flex items-center gap-2.5 text-[13.5px] font-medium text-slate-700">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#2563EB]"><FileCheck2 className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#1E5CC8]"><FileCheck2 className="h-4 w-4" aria-hidden="true" /></span>
                     Digital workflow systems
                   </li>
                   <li className="flex items-center gap-2.5 text-[13.5px] font-medium text-slate-700">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#2563EB]"><PhoneCall className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-50 text-[#1E5CC8]"><PhoneCall className="h-4 w-4" aria-hidden="true" /></span>
                     AI agents &amp; AI calling
                   </li>
                 </ul>

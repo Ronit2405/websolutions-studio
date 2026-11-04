@@ -29,12 +29,12 @@ const POINTS = [
 
 export default function WhyUs() {
   return (
-    <section className="relative overflow-hidden bg-[#0B1220] py-16 sm:py-24" aria-label="Why choose us">
+    <section className="relative overflow-hidden bg-[#0B1E3A] py-16 sm:py-24" aria-label="Why choose us">
       <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-bold tracking-[0.14em] text-[#38BDF8] uppercase">Why Choose Us</p>
+            <p className="text-[12px] font-bold tracking-[0.14em] text-[#34D399] uppercase">Why Choose Us</p>
             <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-white sm:text-[38px] sm:leading-[1.15]">
               Why Work With WebSolutions Studio?
             </h2>
@@ -48,9 +48,9 @@ export default function WhyUs() {
           {POINTS.map((p) => {
             const Icon = p.icon;
             return (
-              <article key={p.n} className="reveal group bg-[#0B1220] p-7 transition-colors hover:bg-[#101a2e] sm:p-8">
+              <article key={p.n} className="reveal group bg-[#0B1E3A] p-7 transition-colors hover:bg-[#122747] sm:p-8">
                 <div className="flex items-start justify-between gap-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-white/5 text-[#38BDF8] ring-1 ring-white/10">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-white/5 text-[#34D399] ring-1 ring-white/10">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="font-[Manrope] text-[13px] font-extrabold tracking-widest text-slate-600">{p.n}</span>
