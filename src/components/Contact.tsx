@@ -213,11 +213,11 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   const inputCls = (hasError?: string) => `field ${hasError ? "field-error" : ""}`;
 
   return (
-    <section id="contact" className="bg-[#F8FAFC] py-16 sm:py-24">
+    <section id="contact" className="bg-[#F3F7FB] py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-2xl">
-          <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">Contact / Approach Us</p>
-          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
+          <p className="text-[12px] font-bold tracking-[0.14em] text-[#1E5CC8] uppercase">Contact / Approach Us</p>
+          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1E3A] sm:text-[38px] sm:leading-[1.15]">
             Let&apos;s Build Something Together
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
@@ -227,7 +227,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[380px_1fr] lg:gap-8">
           {/* Info panel */}
-          <aside className="reveal relative overflow-hidden rounded-2xl bg-[#0B1220] p-7 text-white sm:p-8">
+          <aside className="reveal relative overflow-hidden rounded-2xl bg-[#0B1E3A] p-7 text-white sm:p-8">
             <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
             <div className="relative">
               <h3 className="font-[Manrope] text-[20px] font-extrabold">What happens next</h3>
@@ -240,7 +240,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                   const Icon = s.icon;
                   return (
                     <li key={s.title} className="flex gap-3.5">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5 text-[#38BDF8] ring-1 ring-white/10">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5 text-[#34D399] ring-1 ring-white/10">
                         <Icon className="h-5 w-5" aria-hidden="true" />
                       </span>
                       <span>
@@ -258,7 +258,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <p className="flex items-center gap-2 text-[12px] font-bold tracking-widest text-slate-400 uppercase">
                   <AtSign className="h-3.5 w-3.5" aria-hidden="true" /> Email us directly
                 </p>
-                <a href={`mailto:${OWNER_EMAIL}`} className="mt-2 block break-all text-[15px] font-semibold text-[#38BDF8] hover:underline">
+                <a href={`mailto:${OWNER_EMAIL}`} className="mt-2 block break-all text-[15px] font-semibold text-[#34D399] hover:underline">
                   {OWNER_EMAIL}
                 </a>
                 <p className="mt-4 flex items-center gap-2 text-[13px] text-slate-400">
@@ -279,7 +279,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                   <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
                 </span>
-                <h3 className="mt-5 font-[Manrope] text-[22px] font-extrabold text-[#0B1220]">Inquiry received</h3>
+                <h3 className="mt-5 font-[Manrope] text-[22px] font-extrabold text-[#0B1E3A]">Inquiry received</h3>
                 <p className="mt-3 max-w-md text-[15px] leading-relaxed text-slate-600">
                   Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. We&apos;ll get in touch with you soon.
                 </p>
@@ -292,7 +292,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="mt-7 inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 text-[14px] font-semibold text-[#0B1220] hover:border-slate-400"
+                  className="mt-7 inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 text-[14px] font-semibold text-[#0B1E3A] hover:border-slate-400"
                 >
                   Send another inquiry
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -321,7 +321,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
                     <div>
                       <p className="text-[13.5px] leading-relaxed text-amber-800">{serverMessage}</p>
-                      <a href={mailtoHref} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-[#0B1220] px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800">
+                      <a href={mailtoHref} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-[#0B1E3A] px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800">
                         <Mail className="h-4 w-4" aria-hidden="true" /> Email us directly instead
                       </a>
                     </div>
@@ -391,7 +391,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                         <label
                           key={v}
                           className={`flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px] font-semibold transition-colors ${
-                            checked ? "border-[#2563EB] bg-blue-50 text-[#2563EB]" : "border-slate-300 text-slate-600 hover:border-slate-400"
+                            checked ? "border-[#1E5CC8] bg-blue-50 text-[#1E5CC8]" : "border-slate-300 text-slate-600 hover:border-slate-400"
                           }`}
                         >
                           <input type="radio" name="contactMethod" value={v} checked={checked} onChange={() => set("contactMethod", v)} className="sr-only" />
@@ -426,12 +426,12 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                       type="checkbox"
                       checked={form.consent}
                       onChange={(e) => set("consent", e.target.checked)}
-                      className="mt-0.5 h-4.5 w-4.5 shrink-0 accent-[#2563EB]"
+                      className="mt-0.5 h-4.5 w-4.5 shrink-0 accent-[#1E5CC8]"
                       aria-invalid={Boolean(errors.consent)}
                       aria-describedby={errors.consent ? "err-consent" : undefined}
                     />
                     <span className="text-[13.5px] leading-relaxed text-slate-600">
-                      I agree to the <a href="#/privacy" className="font-semibold text-[#2563EB] underline underline-offset-2">Privacy Policy</a> and consent to WebSolutions Studio contacting me about my inquiry. <span className="text-red-600" aria-hidden="true">*</span>
+                      I agree to the <a href="#/privacy" className="font-semibold text-[#1E5CC8] underline underline-offset-2">Privacy Policy</a> and consent to WebSolutions Studio contacting me about my inquiry. <span className="text-red-600" aria-hidden="true">*</span>
                     </span>
                   </label>
                   {errors.consent && <p id="err-consent" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.consent}</p>}
@@ -440,7 +440,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-6 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-[#1D4ED8] disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 sm:w-auto sm:min-w-[260px]"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1E5CC8] px-6 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-[#16468F] disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E5CC8] focus-visible:ring-offset-2 sm:w-auto sm:min-w-[260px]"
                 >
                   {status === "submitting" ? (
                     <><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Sending…</>

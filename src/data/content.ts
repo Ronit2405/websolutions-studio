@@ -115,10 +115,36 @@ export const SERVICE_OPTIONS = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#/" },
+  { label: "Services", href: "#/services" },
+  { label: "About", href: "#/about" },
+  { label: "Work", href: "#/work" },
+  { label: "Contact", href: "#/contact" },
+];
+
+export interface Founder {
+  initials: string;
+  name: string;
+  role: string;
+  tag: string;
+  bio: string;
+}
+
+export const FOUNDERS: Founder[] = [
+  {
+    initials: "RS",
+    name: "Ronit Sundrani",
+    role: "Founder, WebSolutions Studio",
+    tag: "Founder",
+    bio: "Started WebSolutions Studio with a simple vision — helping businesses simplify their work through technology.",
+  },
+  {
+    initials: "HB",
+    name: "Harsh Barmeda",
+    role: "Co-Founder, WebSolutions Studio",
+    tag: "Co-Founder",
+    bio: "Works alongside the team to make sure every project is planned carefully and delivered on what was promised.",
+  },
 ];
 
 export const IMAGES = {

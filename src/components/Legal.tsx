@@ -6,12 +6,12 @@ function Shell({ title, updated, children }: { title: string; updated: string; c
   return (
     <main className="bg-white pt-[72px]">
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-        <a href="#home" className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-[#2563EB] hover:underline">
+        <a href="#/" className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-[#1E5CC8] hover:underline">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
         </a>
-        <h1 className="mt-6 font-[Manrope] text-[32px] font-extrabold tracking-tight text-[#0B1220]">{title}</h1>
+        <h1 className="mt-6 font-[Manrope] text-[32px] font-extrabold tracking-tight text-[#0B1E3A]">{title}</h1>
         <p className="mt-2 text-[13.5px] text-slate-500">Last updated: {updated}</p>
-        <div className="mt-8 space-y-6 text-[15px] leading-relaxed text-slate-600 [&_h2]:font-[Manrope] [&_h2]:text-[18px] [&_h2]:font-bold [&_h2]:text-[#0B1220] [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5">
+        <div className="mt-8 space-y-6 text-[15px] leading-relaxed text-slate-600 [&_h2]:font-[Manrope] [&_h2]:text-[18px] [&_h2]:font-bold [&_h2]:text-[#0B1E3A] [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5">
           {children}
         </div>
       </div>
@@ -56,11 +56,11 @@ export function PrivacyPage() {
       </section>
       <section>
         <h2>6. Your rights</h2>
-        <p>You may request access to, correction of, or deletion of the personal information we hold about you by contacting us at <a className="font-semibold text-[#2563EB] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
+        <p>You may request access to, correction of, or deletion of the personal information we hold about you by contacting us at <a className="font-semibold text-[#1E5CC8] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
       </section>
       <section>
         <h2>7. Contact</h2>
-        <p>For any privacy-related questions, contact WebSolutions Studio (Founder: Ronit Sundrani) at <a className="font-semibold text-[#2563EB] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
+        <p>For any privacy-related questions, contact WebSolutions Studio (Founder: Ronit Sundrani) at <a className="font-semibold text-[#1E5CC8] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
       </section>
     </Shell>
   );
@@ -97,7 +97,7 @@ export function TermsPage() {
       </section>
       <section>
         <h2>7. Contact</h2>
-        <p>Questions about these terms can be sent to <a className="font-semibold text-[#2563EB] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
+        <p>Questions about these terms can be sent to <a className="font-semibold text-[#1E5CC8] underline underline-offset-2" href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.</p>
       </section>
     </Shell>
   );
@@ -105,19 +105,19 @@ export function TermsPage() {
 
 export function NotFoundPage() {
   return (
-    <main className="flex min-h-[70vh] items-center bg-[#F8FAFC] pt-[72px]">
+    <main className="flex min-h-[70vh] items-center bg-[#F3F7FB] pt-[72px]">
       <div className="mx-auto max-w-xl px-4 py-20 text-center sm:px-6">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#2563EB] shadow-sm ring-1 ring-slate-200">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#1E5CC8] shadow-sm ring-1 ring-slate-200">
           <FileQuestion className="h-8 w-8" aria-hidden="true" />
         </span>
-        <p className="mt-6 font-[Manrope] text-[56px] font-extrabold leading-none text-[#0B1220]">404</p>
-        <h1 className="mt-3 font-[Manrope] text-[22px] font-extrabold text-[#0B1220]">Page not found</h1>
+        <p className="mt-6 font-[Manrope] text-[56px] font-extrabold leading-none text-[#0B1E3A]">404</p>
+        <h1 className="mt-3 font-[Manrope] text-[22px] font-extrabold text-[#0B1E3A]">Page not found</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-600">
           The page you are looking for does not exist or may have been moved.
         </p>
         <a
-          href="#home"
-          className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#1D4ED8]"
+          href="#/"
+          className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#1E5CC8] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#16468F]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Return to Home
         </a>

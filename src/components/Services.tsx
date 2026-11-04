@@ -15,8 +15,8 @@ export default function Services({ onSelectService }: Props) {
     <section id="services" className="bg-white py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-2xl">
-          <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">Our Services</p>
-          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
+          <p className="text-[12px] font-bold tracking-[0.14em] text-[#1E5CC8] uppercase">Our Services</p>
+          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1E3A] sm:text-[38px] sm:leading-[1.15]">
             Digital Solutions Designed for Your Business
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
@@ -40,13 +40,13 @@ export default function Services({ onSelectService }: Props) {
                     onClick={() => setActiveId(s.id)}
                     className={`flex min-w-[240px] items-center gap-3.5 rounded-xl border p-4 text-left transition-all lg:min-w-0 ${
                       selected
-                        ? "border-[#2563EB] bg-blue-50/60 shadow-sm"
+                        ? "border-[#1E5CC8] bg-blue-50/60 shadow-sm"
                         : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                     }`}
                   >
                     <span
                       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                        selected ? "bg-[#2563EB] text-white" : "bg-slate-100 text-slate-600"
+                        selected ? "bg-[#1E5CC8] text-white" : "bg-slate-100 text-slate-600"
                       }`}
                     >
                       <Icon className="h-5 w-5" aria-hidden="true" />
@@ -54,7 +54,7 @@ export default function Services({ onSelectService }: Props) {
                     <span className="min-w-0">
                       <span className="flex items-center gap-2">
                         <span className="text-[11px] font-bold tracking-widest text-slate-400">0{i + 1}</span>
-                        <span className={`block truncate text-[14.5px] font-bold leading-snug ${selected ? "text-[#0B1220]" : "text-slate-700"}`}>
+                        <span className={`block truncate text-[14.5px] font-bold leading-snug ${selected ? "text-[#0B1E3A]" : "text-slate-700"}`}>
                           {s.title}
                         </span>
                       </span>
@@ -67,13 +67,13 @@ export default function Services({ onSelectService }: Props) {
           </div>
 
           {/* Detail panel */}
-          <div className="reveal rounded-2xl border border-slate-200 bg-[#F8FAFC] p-6 sm:p-8" role="tabpanel" aria-live="polite">
+          <div className="reveal rounded-2xl border border-slate-200 bg-[#F3F7FB] p-6 sm:p-8" role="tabpanel" aria-live="polite">
             <div className="flex items-start gap-4">
-              <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#2563EB] text-white sm:flex">
+              <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#1E5CC8] text-white sm:flex">
                 <ActiveIcon className="h-6 w-6" aria-hidden="true" />
               </span>
               <div>
-                <h3 className="font-[Manrope] text-[22px] font-extrabold tracking-tight text-[#0B1220] sm:text-[24px]">{active.title}</h3>
+                <h3 className="font-[Manrope] text-[22px] font-extrabold tracking-tight text-[#0B1E3A] sm:text-[24px]">{active.title}</h3>
                 <p className="mt-2 max-w-xl text-[15.5px] leading-relaxed text-slate-600">{active.description}</p>
               </div>
             </div>
@@ -82,7 +82,7 @@ export default function Services({ onSelectService }: Props) {
             <ul className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
               {active.includes.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-[14.5px] font-medium text-slate-700">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[#2563EB]">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[#1E5CC8]">
                     <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
                   </span>
                   {item}
@@ -95,7 +95,7 @@ export default function Services({ onSelectService }: Props) {
               <button
                 type="button"
                 onClick={() => onSelectService(active.formValue)}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-5 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#1D4ED8] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1E5CC8] px-5 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#16468F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E5CC8] focus-visible:ring-offset-2"
               >
                 Learn More — Enquire Now
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
