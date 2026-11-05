@@ -102,7 +102,10 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   };
 
   const mailtoHref = useMemo(() => {
-    const subject = encodeURIComponent(t("New Project Inquiry – WebSolutions Studio"));
+    const isAppointmentRequest = form.service === "Appointment / Consultation" || Boolean(form.date || form.time);
+    const subject = encodeURIComponent(
+      t(isAppointmentRequest ? "New Appointment Request – WebSolutions Studio" : "New Project Inquiry – WebSolutions Studio")
+    );
     const body = encodeURIComponent(
       [
         `${t("Name:")} ${form.fullName || "—"}`,

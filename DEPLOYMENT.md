@@ -32,35 +32,51 @@ Frontend (React) ──POST /api/contact──► Vercel Serverless Function (ap
 ## 2. Set up Resend (free tier is enough to start)
 
 1. Create an account at https://resend.com
-2. Add and verify your sending domain (e.g. `websolutionsstudio.com`) in
-   Resend → Domains, following their DNS instructions.
-3. Create an API key in Resend → API Keys (sending permission).
-4. Note your verified sender address, e.g. `inquiries@websolutionsstudio.com`.
+2. Add and verify a sending domain you own in Resend → Domains, following
+   Resend's DNS instructions. A personal `@gmail.com` address cannot be used
+   as the verified sender.
+3. Create an API key in Resend → API Keys with email-sending permission.
+4. Choose a sender on that verified domain, e.g.
+   `inquiries@your-verified-domain.com`.
 
 ## 3. Configure environment variables
 
-Copy `.env.example` values into **Vercel → Project → Settings → Environment
-Variables** (Production + Preview):
+Use `.env.example` as a template and enter real values in **Vercel → Project
+→ Settings → Environment Variables** (Production; add Preview too if you want
+to test preview deployments). Do not copy placeholder values or commit a real
+`.env` file:
 
 | Variable | Value | Required |
 |---|---|---|
 | `RESEND_API_KEY` | Your Resend API key (`re_...`) | Yes |
-| `OWNER_EMAIL` | Inbox that receives inquiry notifications | Yes |
-| `FROM_EMAIL` | Verified sender in Resend | Yes |
+| `FROM_EMAIL` | Sender address on a domain verified in Resend | Yes |
+| `OWNER_EMAIL` | Inbox for inquiry and appointment notifications; defaults to `ronitsundrani0104@gmail.com` | Optional, but set it explicitly in Vercel |
+| `VITE_OWNER_EMAIL` | Public contact email shown on the website; defaults to `ronitsundrani0104@gmail.com` | Optional, but set it explicitly in Vercel |
 | `SEND_CUSTOMER_CONFIRMATION` | `true` to also email the customer | Optional |
-| `VITE_OWNER_EMAIL` | Public email shown on the site | Optional |
 
-> Replace `hello@websolutionsstudio.com` everywhere with your real inbox
-> address. `OWNER_EMAIL` is the single source of truth for notifications.
+At minimum, set `RESEND_API_KEY` and `FROM_EMAIL`. Set both `OWNER_EMAIL` and
+`VITE_OWNER_EMAIL` to `ronitsundrani0104@gmail.com` in the existing Vercel
+project so notifications and the site's direct-email links use the same inbox.
+If either variable is already set to an older address, update or remove that
+old value; an existing environment variable overrides the code default.
+
+`FROM_EMAIL` must use a domain you own and have verified in Resend; it is the
+**sender** address, not your Gmail inbox. The Gmail address above is the
+**recipient**.
 
 ## 4. Deploy on Vercel
 
-1. Push this project to a Git repository (GitHub/GitLab/Bitbucket).
-2. In Vercel, **Add New → Project** and import the repository.
-3. Framework preset: **Vite**. Build command: `npm run build`. Output: `dist`.
-4. Add the environment variables from step 3.
-5. Deploy. The `api/contact.ts` function is deployed automatically as
-   `/api/contact` — no extra configuration needed.
+This repository is already connected to Vercel through GitHub. Use the existing
+Vercel project that serves the live site:
+
+1. Open **Project → Settings → Environment Variables**.
+2. Add the variables from section 3. Set `RESEND_API_KEY` and `FROM_EMAIL` for
+   Production; also select Preview if you want to test branch preview URLs.
+3. Save the variables, then redeploy the latest deployment so the new settings
+   take effect. Do not put the Resend API key in frontend variables (`VITE_*`)
+   or in the Git repository.
+4. Vercel deploys `api/contact.ts` automatically as `/api/contact` — no extra
+   routing configuration is needed.
 
 ## 5. Verify it works
 
@@ -70,6 +86,7 @@ Variables** (Production + Preview):
    the owner email arrives in your inbox.
 4. Check the email contains: name, business, email, phone, service, project
    description, contact method, appointment date/time, and submission time.
+   Appointment requests are labeled **New Appointment Request** in the subject.
 5. Test validation: empty required fields, invalid email, and unchecked
    consent must all be blocked with clear messages.
 6. Test on mobile (375px), tablet (768px), and desktop (1280px+).

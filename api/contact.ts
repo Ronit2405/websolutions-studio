@@ -1,15 +1,15 @@
 /**
  * WebSolutions Studio — Contact form email endpoint (Vercel Serverless Function)
  *
- * Sends a "New Project Inquiry" notification email to the business owner
+ * Sends a new inquiry or appointment notification email to the business owner
  * using the Resend transactional email API, plus an optional confirmation
  * email to the customer.
  *
  * Required environment variables (set in Vercel → Project → Settings → Environment Variables):
  *   RESEND_API_KEY        — your Resend API key (never expose in frontend code)
- *   OWNER_EMAIL           — where inquiry notifications are delivered
  *   FROM_EMAIL            — verified sender address in Resend (e.g. inquiries@yourdomain.com)
  * Optional:
+ *   OWNER_EMAIL           — notification recipient (defaults to ronitsundrani0104@gmail.com)
  *   SEND_CUSTOMER_CONFIRMATION — "true" to also email the customer a confirmation
  *
  * Security:
@@ -33,6 +33,8 @@ type Res = {
   status: (code: number) => Res;
   json: (obj: any) => void;
 };
+
+const DEFAULT_OWNER_EMAIL = "ronitsundrani0104@gmail.com";
 
 const ALLOWED_SERVICES = [
   "Website Development",
@@ -73,7 +75,7 @@ function isValidEmail(v: string): boolean {
 export default async function handler(req: Req, res: Res) {
   // Health / config check — never leaks secrets
   if (req.method === "GET") {
-    const configured = Boolean(process.env.RESEND_API_KEY && process.env.OWNER_EMAIL && process.env.FROM_EMAIL);
+    const configured = Boolean(process.env.RESEND_API_KEY?.trim() && process.env.FROM_EMAIL?.trim());
     return res.status(200).json({ ok: true, configured });
   }
 
@@ -123,10 +125,10 @@ export default async function handler(req: Req, res: Res) {
   }
 
   // ---- Config check (honest failure — never fake success) ----
-  const apiKey = process.env.RESEND_API_KEY;
-  const ownerEmail = process.env.OWNER_EMAIL;
-  const fromEmail = process.env.FROM_EMAIL;
-  if (!apiKey || !ownerEmail || !fromEmail) {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const ownerEmail = process.env.OWNER_EMAIL?.trim() || DEFAULT_OWNER_EMAIL;
+  const fromEmail = process.env.FROM_EMAIL?.trim();
+  if (!apiKey || !fromEmail) {
     return res.status(503).json({
       ok: false,
       error:
@@ -135,6 +137,8 @@ export default async function handler(req: Req, res: Res) {
   }
 
   const submittedAt = new Date().toLocaleString("en-GB", { timeZone: "UTC" }) + " UTC";
+  const isAppointmentRequest = service === "Appointment / Consultation" || Boolean(date || time);
+  const notificationSubject = `${isAppointmentRequest ? "New Appointment Request" : "New Project Inquiry"} – WebSolutions Studio`;
 
   const rows: Array<[string, string]> = [
     ["Customer Name", fullName],
@@ -154,8 +158,8 @@ export default async function handler(req: Req, res: Res) {
   const htmlBody = `
     <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#1E293B;">
       <div style="background:#0B1220;padding:20px 24px;border-radius:10px 10px 0 0;">
-        <h1 style="margin:0;color:#ffffff;font-size:18px;">New Project Inquiry – WebSolutions Studio</h1>
-        <p style="margin:6px 0 0;color:#94A3B8;font-size:13px;">A new inquiry was submitted through the website contact form.</p>
+        <h1 style="margin:0;color:#ffffff;font-size:18px;">${escapeHtml(notificationSubject)}</h1>
+        <p style="margin:6px 0 0;color:#94A3B8;font-size:13px;">${isAppointmentRequest ? "A new appointment request" : "A new inquiry"} was submitted through the website contact form.</p>
       </div>
       <div style="border:1px solid #E2E8F0;border-top:none;padding:20px 24px;border-radius:0 0 10px 10px;">
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
@@ -193,7 +197,7 @@ export default async function handler(req: Req, res: Res) {
       from: fromEmail,
       to: [ownerEmail],
       reply_to: email,
-      subject: "New Project Inquiry – WebSolutions Studio",
+      subject: notificationSubject,
       text: textBody,
       html: htmlBody,
     });

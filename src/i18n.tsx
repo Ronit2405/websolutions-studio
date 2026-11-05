@@ -245,6 +245,7 @@ const HINDI_TRANSLATIONS: Record<string, string> = {
   "Send Project Inquiry": "प्रोजेक्ट पूछताछ भेजें",
   "Protected against spam. Submitting sends an email notification to the studio — you will only see a success message once delivery is confirmed.": "यह फ़ॉर्म स्पैम से सुरक्षित है। भेजने पर स्टूडियो को ईमेल सूचना जाएगी—सफलता का संदेश तभी दिखेगा जब ईमेल भेजे जाने की पुष्टि होगी।",
   "New Project Inquiry – WebSolutions Studio": "नई प्रोजेक्ट पूछताछ – WebSolutions Studio",
+  "New Appointment Request – WebSolutions Studio": "नई अपॉइंटमेंट पूछताछ – WebSolutions Studio",
   "Name:": "नाम:",
   "Business:": "व्यवसाय:",
   "Phone:": "फ़ोन:",

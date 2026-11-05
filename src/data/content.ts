@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const OWNER_EMAIL =
-  (import.meta as any).env?.VITE_OWNER_EMAIL || "hello@websolutionsstudio.com";
+  (import.meta as any).env?.VITE_OWNER_EMAIL || "ronitsundrani0104@gmail.com";
 
 export interface Service {
   id: string;
