@@ -213,21 +213,21 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   const inputCls = (hasError?: string) => `field ${hasError ? "field-error" : ""}`;
 
   return (
-    <section id="contact" className="bg-[#F8FAFC] py-16 sm:py-24">
+    <section id="contact" className="bg-[#F8FAFC] pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-2xl">
           <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">Contact / Approach Us</p>
-          <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
+          <h1 className="mt-3 break-words font-[Manrope] text-[28px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
             Let&apos;s Build Something Together
-          </h2>
+          </h1>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
             Have a business requirement or looking for a digital solution? Tell us what you need. We&apos;ll get back to you to discuss your project.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[380px_1fr] lg:gap-8">
+        <div className="mt-8 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-8">
           {/* Info panel */}
-          <aside className="reveal relative overflow-hidden rounded-2xl bg-[#0B1220] p-7 text-white sm:p-8">
+          <aside className="reveal relative min-w-0 overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white sm:p-8">
             <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
             <div className="relative">
               <h3 className="font-[Manrope] text-[20px] font-extrabold">What happens next</h3>
@@ -239,12 +239,12 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 ].map((s, i) => {
                   const Icon = s.icon;
                   return (
-                    <li key={s.title} className="flex gap-3.5">
+                    <li key={s.title} className="flex min-w-0 gap-3">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5 text-[#38BDF8] ring-1 ring-white/10">
                         <Icon className="h-5 w-5" aria-hidden="true" />
                       </span>
-                      <span>
-                        <span className="block text-[14px] font-bold">
+                      <span className="min-w-0 flex-1">
+                        <span className="block break-words text-[14px] font-bold">
                           <span className="mr-1.5 text-slate-500">0{i + 1}</span> {s.title}
                         </span>
                         <span className="mt-0.5 block text-[13px] leading-relaxed text-slate-400">{s.text}</span>
@@ -273,7 +273,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
           </aside>
 
           {/* Form card */}
-          <div className="reveal rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <div className="reveal min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
             {status === "success" ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center py-10 text-center" role="status">
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
@@ -283,11 +283,11 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <p className="mt-3 max-w-md text-[15px] leading-relaxed text-slate-600">
                   Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. We&apos;ll get in touch with you soon.
                 </p>
-                <dl className="mt-6 w-full max-w-md rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 text-left text-[13.5px]">
-                  <div className="flex justify-between gap-4 py-1"><dt className="text-slate-500">Name</dt><dd className="font-semibold text-slate-800">{form.fullName}</dd></div>
-                  <div className="flex justify-between gap-4 py-1"><dt className="text-slate-500">Interested in</dt><dd className="font-semibold text-slate-800">{form.service}</dd></div>
-                  <div className="flex justify-between gap-4 py-1"><dt className="text-slate-500">Preferred contact</dt><dd className="font-semibold text-slate-800">{form.contactMethod}</dd></div>
-                  <div className="flex justify-between gap-4 py-1"><dt className="text-slate-500">Submitted</dt><dd className="font-semibold text-slate-800">{submittedAt}</dd></div>
+                <dl className="mt-6 w-full max-w-md rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-left text-[13.5px] sm:px-5">
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Name</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.fullName}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Interested in</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.service}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Preferred contact</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.contactMethod}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Submitted</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{submittedAt}</dd></div>
                 </dl>
                 <button
                   type="button"

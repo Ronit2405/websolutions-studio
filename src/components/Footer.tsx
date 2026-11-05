@@ -2,18 +2,19 @@ import { Mail, User } from "lucide-react";
 import { OWNER_EMAIL } from "../data/content";
 
 const QUICK = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#/home" },
+  { label: "Services", href: "#/services" },
+  { label: "About", href: "#/about" },
+  { label: "Our Work", href: "#/work" },
+  { label: "Contact", href: "#/contact" },
 ];
 
 const SERVICES_FOOTER = [
-  { label: "Website Development", href: "#services" },
-  { label: "Digital Management", href: "#services" },
-  { label: "AI Automation", href: "#services" },
-  { label: "AI Calling Solutions", href: "#services" },
-  { label: "Custom Software", href: "#services" },
+  { label: "Website Development", href: "#/services" },
+  { label: "Digital Management", href: "#/services" },
+  { label: "AI Automation", href: "#/services" },
+  { label: "AI Calling Solutions", href: "#/services" },
+  { label: "Custom Software", href: "#/services" },
 ];
 
 export default function Footer() {
@@ -22,7 +23,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <a href="#home" className="flex items-center gap-2.5" aria-label="WebSolutions Studio — Home">
+            <a href="#/home" className="flex items-center gap-2.5" aria-label="WebSolutions Studio — Home">
               <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2563EB] text-white">
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M3 6 L8 18 L12 9 L16 18 L21 6" />
@@ -80,7 +81,7 @@ export default function Footer() {
               </li>
             </ul>
             <a
-              href="#contact"
+              href="#/contact"
               className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-4 py-2.5 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#1D4ED8]"
             >
               Start a Project

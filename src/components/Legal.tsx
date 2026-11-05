@@ -4,9 +4,9 @@ import { OWNER_EMAIL } from "../data/content";
 
 function Shell({ title, updated, children }: { title: string; updated: string; children: ReactNode }) {
   return (
-    <main className="bg-white pt-[72px]">
+    <section className="bg-white pt-[72px]">
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-        <a href="#home" className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-[#2563EB] hover:underline">
+        <a href="#/home" className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-[#2563EB] hover:underline">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
         </a>
         <h1 className="mt-6 font-[Manrope] text-[32px] font-extrabold tracking-tight text-[#0B1220]">{title}</h1>
@@ -15,7 +15,7 @@ function Shell({ title, updated, children }: { title: string; updated: string; c
           {children}
         </div>
       </div>
-    </main>
+    </section>
   );
 }
 
@@ -105,7 +105,7 @@ export function TermsPage() {
 
 export function NotFoundPage() {
   return (
-    <main className="flex min-h-[70vh] items-center bg-[#F8FAFC] pt-[72px]">
+    <section className="flex min-h-[70vh] items-center bg-[#F8FAFC] pt-[72px]">
       <div className="mx-auto max-w-xl px-4 py-20 text-center sm:px-6">
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#2563EB] shadow-sm ring-1 ring-slate-200">
           <FileQuestion className="h-8 w-8" aria-hidden="true" />
@@ -116,12 +116,12 @@ export function NotFoundPage() {
           The page you are looking for does not exist or may have been moved.
         </p>
         <a
-          href="#home"
+          href="#/home"
           className="mt-7 inline-flex items-center gap-2 rounded-lg bg-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white hover:bg-[#1D4ED8]"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Return to Home
         </a>
       </div>
-    </main>
+    </section>
   );
 }

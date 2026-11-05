@@ -9,15 +9,15 @@ const STEPS = [
 
 export default function About() {
   return (
-    <section id="about" className="bg-[#F8FAFC] py-16 sm:py-24">
+    <section id="about" className="bg-[#F8FAFC] pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div className="grid min-w-0 gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
           {/* Copy */}
           <div className="reveal">
             <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">About Us</p>
-            <h2 className="mt-3 font-[Manrope] text-[30px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
+            <h1 className="mt-3 break-words font-[Manrope] text-[28px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
               About WebSolutions Studio
-            </h2>
+            </h1>
             <div className="mt-6 space-y-4 text-[15.5px] leading-relaxed text-slate-600">
               <p>
                 <strong className="font-semibold text-[#0B1220]">Hello, I&apos;m Ronit Sundrani, founder of WebSolutions Studio.</strong>
