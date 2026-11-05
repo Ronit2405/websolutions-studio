@@ -9,6 +9,7 @@ import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { PrivacyPage, TermsPage, NotFoundPage } from "./components/Legal";
+import { useLanguage } from "./i18n";
 
 type Route = "home" | "services" | "about" | "work" | "contact" | "privacy" | "terms" | "404";
 
@@ -39,6 +40,7 @@ function useReveal(route: Route) {
 }
 
 function BackToTop() {
+  const { t } = useLanguage();
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 600);
@@ -50,7 +52,7 @@ function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="Back to top"
+      aria-label={t("Back to top")}
       className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[#0B1220] text-white shadow-lg transition-colors hover:bg-[#2563EB]"
     >
       <ArrowUp className="h-5 w-5" aria-hidden="true" />
@@ -59,6 +61,7 @@ function BackToTop() {
 }
 
 export default function App() {
+  const { t } = useLanguage();
   const [route, setRoute] = useState<Route>(() => routeFromHash());
   const [selectedService, setSelectedService] = useState("");
 
@@ -116,8 +119,8 @@ export default function App() {
       terms: "Terms & Conditions — WebSolutions Studio",
       "404": "Page Not Found — WebSolutions Studio",
     };
-    document.title = pageTitles[route];
-  }, [route]);
+    document.title = t(pageTitles[route]);
+  }, [route, t]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,7 +132,7 @@ export default function App() {
         }}
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-[#2563EB] focus:px-4 focus:py-2 focus:text-white"
       >
-        Skip to content
+        {t("Skip to content")}
       </a>
       <Navbar activePage={route} />
       <main id="main-content" tabIndex={-1} key={route} className="min-w-0 outline-none">

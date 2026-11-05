@@ -15,6 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { OWNER_EMAIL, SERVICE_OPTIONS } from "../data/content";
+import { useLanguage } from "../i18n";
 
 interface Props {
   selectedService: string;
@@ -70,6 +71,7 @@ function validate(f: FormState): Errors {
 }
 
 export default function Contact({ selectedService, onServiceChange }: Props) {
+  const { t } = useLanguage();
   const [form, setForm] = useState<FormState>({ ...INITIAL, service: selectedService });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -100,24 +102,24 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   };
 
   const mailtoHref = useMemo(() => {
-    const subject = encodeURIComponent("New Project Inquiry – WebSolutions Studio");
+    const subject = encodeURIComponent(t("New Project Inquiry – WebSolutions Studio"));
     const body = encodeURIComponent(
       [
-        `Name: ${form.fullName || "—"}`,
-        `Business: ${form.business || "—"}`,
-        `Email: ${form.email || "—"}`,
-        `Phone: ${form.phone || "—"}`,
-        `City: ${form.city || "—"}`,
-        `Interested in: ${form.service || "—"}`,
-        `Preferred contact: ${form.contactMethod}`,
-        `Appointment: ${form.date || "—"} ${form.time || "—"}`,
+        `${t("Name:")} ${form.fullName || "—"}`,
+        `${t("Business:")} ${form.business || "—"}`,
+        `${t("Email:")} ${form.email || "—"}`,
+        `${t("Phone:")} ${form.phone || "—"}`,
+        `${t("City:")} ${form.city || "—"}`,
+        `${t("Interested in:")} ${form.service ? t(form.service) : "—"}`,
+        `${t("Preferred contact:")} ${t(form.contactMethod)}`,
+        `${t("Appointment:")} ${form.date || "—"} ${form.time || "—"}`,
         "",
-        "Project description:",
+        t("Project description:"),
         form.description || "—",
       ].join("\n")
     );
     return `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
-  }, [form]);
+  }, [form, t]);
 
   async function handleSubmit(ev: FormEvent) {
     ev.preventDefault();
@@ -216,12 +218,12 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
     <section id="contact" className="bg-[#F8FAFC] pt-24 pb-16 sm:pt-32 sm:pb-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-2xl">
-          <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">Contact / Approach Us</p>
+          <p className="text-[12px] font-bold tracking-[0.14em] text-[#2563EB] uppercase">{t("Contact / Approach Us")}</p>
           <h1 className="mt-3 break-words font-[Manrope] text-[28px] font-extrabold tracking-tight text-[#0B1220] sm:text-[38px] sm:leading-[1.15]">
-            Let&apos;s Build Something Together
+            {t("Let's Build Something Together")}
           </h1>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
-            Have a business requirement or looking for a digital solution? Tell us what you need. We&apos;ll get back to you to discuss your project.
+            {t("Have a business requirement or looking for a digital solution? Tell us what you need. We'll get back to you to discuss your project.")}
           </p>
         </div>
 
@@ -230,7 +232,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
           <aside className="reveal relative min-w-0 overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white sm:p-8">
             <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
             <div className="relative">
-              <h3 className="font-[Manrope] text-[20px] font-extrabold">What happens next</h3>
+              <h3 className="font-[Manrope] text-[20px] font-extrabold">{t("What happens next")}</h3>
               <ol className="mt-5 space-y-4">
                 {[
                   { icon: Mail, title: "We review your inquiry", text: "Every submission is read personally — no automated sales funnel." },
@@ -245,9 +247,9 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block break-words text-[14px] font-bold">
-                          <span className="mr-1.5 text-slate-500">0{i + 1}</span> {s.title}
+                          <span className="mr-1.5 text-slate-500">0{i + 1}</span> {t(s.title)}
                         </span>
-                        <span className="mt-0.5 block text-[13px] leading-relaxed text-slate-400">{s.text}</span>
+                        <span className="mt-0.5 block text-[13px] leading-relaxed text-slate-400">{t(s.text)}</span>
                       </span>
                     </li>
                   );
@@ -256,17 +258,17 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
               <div className="mt-8 border-t border-white/10 pt-6">
                 <p className="flex items-center gap-2 text-[12px] font-bold tracking-widest text-slate-400 uppercase">
-                  <AtSign className="h-3.5 w-3.5" aria-hidden="true" /> Email us directly
+                  <AtSign className="h-3.5 w-3.5" aria-hidden="true" /> {t("Email us directly")}
                 </p>
                 <a href={`mailto:${OWNER_EMAIL}`} className="mt-2 block break-all text-[15px] font-semibold text-[#38BDF8] hover:underline">
                   {OWNER_EMAIL}
                 </a>
                 <p className="mt-4 flex items-center gap-2 text-[13px] text-slate-400">
-                  <User className="h-4 w-4" aria-hidden="true" /> Founder: Ronit Sundrani
+                  <User className="h-4 w-4" aria-hidden="true" /> {t("Founder:")} Ronit Sundrani
                 </p>
                 <p className="mt-2 flex items-start gap-2 text-[12.5px] leading-relaxed text-slate-500">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                  Your details are only used to respond to your inquiry. We never share them with third parties for marketing.
+                  {t("Your details are only used to respond to your inquiry. We never share them with third parties for marketing.")}
                 </p>
               </div>
             </div>
@@ -279,33 +281,33 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                   <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
                 </span>
-                <h3 className="mt-5 font-[Manrope] text-[22px] font-extrabold text-[#0B1220]">Inquiry received</h3>
+                <h3 className="mt-5 font-[Manrope] text-[22px] font-extrabold text-[#0B1220]">{t("Inquiry received")}</h3>
                 <p className="mt-3 max-w-md text-[15px] leading-relaxed text-slate-600">
-                  Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. We&apos;ll get in touch with you soon.
+                  {t("Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. We'll get in touch with you soon.")}
                 </p>
                 <dl className="mt-6 w-full max-w-md rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-left text-[13.5px] sm:px-5">
-                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Name</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.fullName}</dd></div>
-                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Interested in</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.service}</dd></div>
-                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Preferred contact</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.contactMethod}</dd></div>
-                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">Submitted</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{submittedAt}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Name")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.fullName}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Interested in")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{t(form.service)}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Preferred contact")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{t(form.contactMethod)}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Submitted")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{submittedAt}</dd></div>
                 </dl>
                 <button
                   type="button"
                   onClick={resetForm}
                   className="mt-7 inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3 text-[14px] font-semibold text-[#0B1220] hover:border-slate-400"
                 >
-                  Send another inquiry
+                  {t("Send another inquiry")}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate aria-label="Project inquiry form">
+              <form onSubmit={handleSubmit} noValidate aria-label={t("Project inquiry form")}>
                 {/* Config notice */}
                 {emailConfigured === false && (
                   <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5" role="alert">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
                     <p className="text-[13.5px] leading-relaxed text-amber-800">
-                      <strong>Email delivery is not connected yet.</strong> You can still fill this form, but sending will only work once the Resend email service is configured (see <code className="rounded bg-amber-100 px-1">DEPLOYMENT.md</code>). Until then, please use the direct email option below.
+                      <strong>{t("Email delivery is not connected yet.")}</strong> {t("You can still fill this form, but sending will only work once the Resend email service is configured (see")} <code className="rounded bg-amber-100 px-1">DEPLOYMENT.md</code>{t("). Until then, please use the direct email option below.")}
                     </p>
                   </div>
                 )}
@@ -313,16 +315,16 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 {status === "error" && (
                   <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3.5" role="alert">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" aria-hidden="true" />
-                    <p className="text-[13.5px] leading-relaxed text-red-800">{serverMessage}</p>
+                    <p className="text-[13.5px] leading-relaxed text-red-800">{t(serverMessage)}</p>
                   </div>
                 )}
                 {status === "not-configured" && (
                   <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5" role="alert">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
                     <div>
-                      <p className="text-[13.5px] leading-relaxed text-amber-800">{serverMessage}</p>
+                      <p className="text-[13.5px] leading-relaxed text-amber-800">{t(serverMessage)}</p>
                       <a href={mailtoHref} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-[#0B1220] px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800">
-                        <Mail className="h-4 w-4" aria-hidden="true" /> Email us directly instead
+                        <Mail className="h-4 w-4" aria-hidden="true" /> {t("Email us directly instead")}
                       </a>
                     </div>
                   </div>
@@ -330,56 +332,56 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="fullName" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Full Name <span className="text-red-600" aria-hidden="true">*</span></label>
+                    <label htmlFor="fullName" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Full Name")} <span className="text-red-600" aria-hidden="true">*</span></label>
                     <input id="fullName" data-error-field={errors.fullName ? "" : undefined} className={inputCls(errors.fullName)} value={form.fullName} onChange={(e) => set("fullName", e.target.value)} autoComplete="name" aria-invalid={Boolean(errors.fullName)} aria-describedby={errors.fullName ? "err-fullName" : undefined} />
-                    {errors.fullName && <p id="err-fullName" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.fullName}</p>}
+                    {errors.fullName && <p id="err-fullName" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.fullName || "")}</p>}
                   </div>
                   <div>
-                    <label htmlFor="business" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Business / Company Name</label>
+                    <label htmlFor="business" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Business / Company Name")}</label>
                     <input id="business" className="field" value={form.business} onChange={(e) => set("business", e.target.value)} autoComplete="organization" />
                   </div>
                   <div>
-                    <label htmlFor="email" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Email Address <span className="text-red-600" aria-hidden="true">*</span></label>
+                    <label htmlFor="email" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Email Address")} <span className="text-red-600" aria-hidden="true">*</span></label>
                     <input id="email" data-error-field={errors.email ? "" : undefined} type="email" className={inputCls(errors.email)} value={form.email} onChange={(e) => set("email", e.target.value)} autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "err-email" : undefined} />
-                    {errors.email && <p id="err-email" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.email}</p>}
+                    {errors.email && <p id="err-email" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.email || "")}</p>}
                   </div>
                   <div>
-                    <label htmlFor="phone" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Phone Number <span className="text-red-600" aria-hidden="true">*</span></label>
+                    <label htmlFor="phone" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Phone Number")} <span className="text-red-600" aria-hidden="true">*</span></label>
                     <input id="phone" data-error-field={errors.phone ? "" : undefined} type="tel" className={inputCls(errors.phone)} value={form.phone} onChange={(e) => set("phone", e.target.value)} autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "err-phone" : undefined} />
-                    {errors.phone && <p id="err-phone" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.phone}</p>}
+                    {errors.phone && <p id="err-phone" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.phone || "")}</p>}
                   </div>
                   <div>
-                    <label htmlFor="city" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">City</label>
+                    <label htmlFor="city" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("City")}</label>
                     <input id="city" className="field" value={form.city} onChange={(e) => set("city", e.target.value)} autoComplete="address-level2" />
                   </div>
                   <div>
-                    <label htmlFor="service" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">What are you interested in? <span className="text-red-600" aria-hidden="true">*</span></label>
+                    <label htmlFor="service" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("What are you interested in?")} <span className="text-red-600" aria-hidden="true">*</span></label>
                     <select id="service" data-error-field={errors.service ? "" : undefined} className={inputCls(errors.service)} value={form.service} onChange={(e) => { set("service", e.target.value); onServiceChange(e.target.value); }} aria-invalid={Boolean(errors.service)} aria-describedby={errors.service ? "err-service" : undefined}>
-                      <option value="">Select a service…</option>
-                      {SERVICE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+                      <option value="">{t("Select a service…")}</option>
+                      {SERVICE_OPTIONS.map((o) => <option key={o} value={o}>{t(o)}</option>)}
                     </select>
-                    {errors.service && <p id="err-service" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.service}</p>}
+                    {errors.service && <p id="err-service" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.service || "")}</p>}
                   </div>
                 </div>
 
                 <div className="mt-5">
-                  <label htmlFor="description" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Project Description <span className="text-red-600" aria-hidden="true">*</span></label>
+                  <label htmlFor="description" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Project Description")} <span className="text-red-600" aria-hidden="true">*</span></label>
                   <textarea
                     id="description"
                     data-error-field={errors.description ? "" : undefined}
                     rows={4}
                     className={`${inputCls(errors.description)} resize-y`}
-                    placeholder="Briefly describe what you need or what problem you want to solve..."
+                    placeholder={t("Briefly describe what you need or what problem you want to solve...")}
                     value={form.description}
                     onChange={(e) => set("description", e.target.value)}
                     aria-invalid={Boolean(errors.description)}
                     aria-describedby={errors.description ? "err-description" : undefined}
                   />
-                  {errors.description && <p id="err-description" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.description}</p>}
+                  {errors.description && <p id="err-description" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.description || "")}</p>}
                 </div>
 
                 <fieldset className="mt-5">
-                  <legend className="mb-2 text-[13.5px] font-semibold text-slate-700">Preferred Contact Method</legend>
+                  <legend className="mb-2 text-[13.5px] font-semibold text-slate-700">{t("Preferred Contact Method")}</legend>
                   <div className="flex flex-wrap gap-2">
                     {[
                       { v: "Phone Call", icon: Phone },
@@ -396,7 +398,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                         >
                           <input type="radio" name="contactMethod" value={v} checked={checked} onChange={() => set("contactMethod", v)} className="sr-only" />
                           <Icon className="h-4 w-4" aria-hidden="true" />
-                          {v}
+                          {t(v)}
                         </label>
                       );
                     })}
@@ -405,18 +407,18 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
                 <div className="mt-5 grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="date" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Preferred Appointment Date <span className="font-normal text-slate-400">(optional)</span></label>
+                    <label htmlFor="date" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Preferred Appointment Date")} <span className="font-normal text-slate-400">{t("(optional)")}</span></label>
                     <input id="date" type="date" className="field" value={form.date} onChange={(e) => set("date", e.target.value)} />
                   </div>
                   <div>
-                    <label htmlFor="time" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">Preferred Appointment Time <span className="font-normal text-slate-400">(optional)</span></label>
+                    <label htmlFor="time" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Preferred Appointment Time")} <span className="font-normal text-slate-400">{t("(optional)")}</span></label>
                     <input id="time" type="time" className="field" value={form.time} onChange={(e) => set("time", e.target.value)} />
                   </div>
                 </div>
 
                 {/* Honeypot — hidden from humans */}
                 <div className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
-                  <label htmlFor="website">Leave this field empty</label>
+                  <label htmlFor="website">{t("Leave this field empty")}</label>
                   <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" value={form.website} onChange={(e) => set("website", e.target.value)} />
                 </div>
 
@@ -431,10 +433,10 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                       aria-describedby={errors.consent ? "err-consent" : undefined}
                     />
                     <span className="text-[13.5px] leading-relaxed text-slate-600">
-                      I agree to the <a href="#/privacy" className="font-semibold text-[#2563EB] underline underline-offset-2">Privacy Policy</a> and consent to WebSolutions Studio contacting me about my inquiry. <span className="text-red-600" aria-hidden="true">*</span>
+                      {t("I agree to the")} <a href="#/privacy" className="font-semibold text-[#2563EB] underline underline-offset-2">{t("Privacy Policy")}</a> {t("and consent to WebSolutions Studio contacting me about my inquiry.")} <span className="text-red-600" aria-hidden="true">*</span>
                     </span>
                   </label>
-                  {errors.consent && <p id="err-consent" className="mt-1.5 text-[12.5px] font-medium text-red-600">{errors.consent}</p>}
+                  {errors.consent && <p id="err-consent" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.consent || "")}</p>}
                 </div>
 
                 <button
@@ -443,13 +445,13 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#2563EB] px-6 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-[#1D4ED8] disabled:cursor-not-allowed disabled:opacity-70 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 sm:w-auto sm:min-w-[260px]"
                 >
                   {status === "submitting" ? (
-                    <><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Sending…</>
+                    <><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> {t("Sending…")}</>
                   ) : (
-                    <><Send className="h-4.5 w-4.5" aria-hidden="true" /> Send Project Inquiry</>
+                    <><Send className="h-4.5 w-4.5" aria-hidden="true" /> {t("Send Project Inquiry")}</>
                   )}
                 </button>
                 <p className="mt-3 text-[12.5px] text-slate-400">
-                  Protected against spam. Submitting sends an email notification to the studio — you will only see a success message once delivery is confirmed.
+                  {t("Protected against spam. Submitting sends an email notification to the studio — you will only see a success message once delivery is confirmed.")}
                 </p>
               </form>
             )}
