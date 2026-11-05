@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import {
   Mail,
   User,
@@ -54,7 +55,13 @@ const INITIAL: FormState = {
   website: "",
 };
 
-type Status = "idle" | "submitting" | "success" | "error" | "not-configured";
+// EmailJS identifiers and the Public Key are client-side values by design.
+// The EmailJS private key is never used or included in the website.
+const EMAILJS_SERVICE_ID = (import.meta as any).env?.VITE_EMAILJS_SERVICE_ID || "service_g2uzvof";
+const EMAILJS_TEMPLATE_ID = (import.meta as any).env?.VITE_EMAILJS_TEMPLATE_ID || "template_6w31t7g";
+const EMAILJS_PUBLIC_KEY = (import.meta as any).env?.VITE_EMAILJS_PUBLIC_KEY || "E6u57ecGMZwvhwvEQ";
+
+type Status = "idle" | "submitting" | "success" | "error";
 
 function validate(f: FormState): Errors {
   const e: Errors = {};
@@ -76,8 +83,8 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [serverMessage, setServerMessage] = useState("");
-  const [emailConfigured, setEmailConfigured] = useState<boolean | null>(null);
   const [submittedAt, setSubmittedAt] = useState<string>("");
+  const isSubmittingRef = useRef(false);
 
   // Keep form service in sync when user clicks "Learn More" on a service
   useEffect(() => {
@@ -85,16 +92,6 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       setForm((f) => ({ ...f, service: selectedService }));
     }
   }, [selectedService]);
-
-  // Check whether the email backend is configured (does not leak secrets)
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/contact", { method: "GET" })
-      .then((r) => r.json())
-      .then((d) => { if (!cancelled) setEmailConfigured(Boolean(d?.configured)); })
-      .catch(() => { if (!cancelled) setEmailConfigured(false); });
-    return () => { cancelled = true; };
-  }, []);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -126,6 +123,8 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
   async function handleSubmit(ev: FormEvent) {
     ev.preventDefault();
+    if (isSubmittingRef.current) return;
+
     const errs = validate(form);
     setErrors(errs);
     if (Object.keys(errs).length > 0) {
@@ -141,10 +140,18 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       return;
     }
 
-    // Duplicate-submission guard (same payload within 60 seconds)
-    const fingerprint = [form.email, form.phone, form.service, form.description].join("|");
+    // Avoid duplicate sends within 60 seconds, including repeated appointment requests.
+    const fingerprint = [
+      form.fullName.trim().toLowerCase(),
+      form.email.trim().toLowerCase(),
+      form.phone.trim(),
+      form.service,
+      form.description.trim(),
+      form.date,
+      form.time,
+    ].join("|");
     try {
-      const last = sessionStorage.getItem("wss_last_inquiry");
+      const last = sessionStorage.getItem("wss_last_emailjs_submission");
       if (last) {
         const parsed = JSON.parse(last);
         if (parsed.fingerprint === fingerprint && Date.now() - parsed.at < 60000) {
@@ -155,55 +162,43 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       }
     } catch { /* storage unavailable — continue */ }
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setServerMessage("");
 
+    const templateParams = {
+      name: form.fullName.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      date: form.date || "Not provided",
+      time: form.time || "Not provided",
+      message: [
+        form.description.trim(),
+        "",
+        `Business / Company: ${form.business.trim() || "Not provided"}`,
+        `City: ${form.city.trim() || "Not provided"}`,
+        `Service: ${form.service}`,
+        `Preferred contact method: ${form.contactMethod}`,
+      ].join("\n"),
+    };
+
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: form.fullName.trim(),
-          business: form.business.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim(),
-          city: form.city.trim(),
-          service: form.service,
-          description: form.description.trim(),
-          contactMethod: form.contactMethod,
-          date: form.date,
-          time: form.time,
-          consent: form.consent,
-          website: form.website,
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-
-      if (res.ok && data?.ok) {
-        try {
-          sessionStorage.setItem("wss_last_inquiry", JSON.stringify({ fingerprint, at: Date.now() }));
-        } catch { /* ignore */ }
-        setSubmittedAt(new Date().toLocaleString());
-        setStatus("success");
-        return;
-      }
-
-      if (res.status === 503 || res.status === 404) {
-        setStatus("not-configured");
-        setServerMessage(
-          data?.error ||
-            "Email delivery is not configured yet. Your inquiry was not sent. Please email us directly using the button below, or try again once the email service is connected."
-        );
-        return;
-      }
-
-      setStatus("error");
-      setServerMessage(data?.error || "Something went wrong while sending your inquiry. Please try again, or email us directly.");
-    } catch {
-      setStatus("not-configured");
-      setServerMessage(
-        "We could not reach the email service, so your inquiry was not sent. Please email us directly using the button below."
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
       );
+      try {
+        sessionStorage.setItem("wss_last_emailjs_submission", JSON.stringify({ fingerprint, at: Date.now() }));
+      } catch { /* ignore */ }
+      setSubmittedAt(new Date().toLocaleString());
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setServerMessage("We could not deliver your inquiry right now. Please try again in a moment, or email us directly.");
+    } finally {
+      isSubmittingRef.current = false;
     }
   }
 
@@ -305,27 +300,11 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate aria-label={t("Project inquiry form")}>
-                {/* Config notice */}
-                {emailConfigured === false && (
-                  <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5" role="alert">
-                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
-                    <p className="text-[13.5px] leading-relaxed text-amber-800">
-                      <strong>{t("Email delivery is not connected yet.")}</strong> {t("You can still fill this form, but sending will only work once the Resend email service is configured (see")} <code className="rounded bg-amber-100 px-1">DEPLOYMENT.md</code>{t("). Until then, please use the direct email option below.")}
-                    </p>
-                  </div>
-                )}
-
                 {status === "error" && (
-                  <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3.5" role="alert">
+                  <div className="mb-6 flex min-w-0 items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3.5" role="alert">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" aria-hidden="true" />
-                    <p className="text-[13.5px] leading-relaxed text-red-800">{t(serverMessage)}</p>
-                  </div>
-                )}
-                {status === "not-configured" && (
-                  <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5" role="alert">
-                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
-                    <div>
-                      <p className="text-[13.5px] leading-relaxed text-amber-800">{t(serverMessage)}</p>
+                    <div className="min-w-0">
+                      <p className="text-[13.5px] leading-relaxed text-red-800">{t(serverMessage)}</p>
                       <a href={mailtoHref} className="mt-2 inline-flex items-center gap-2 rounded-lg bg-[#0B1220] px-4 py-2 text-[13px] font-semibold text-white hover:bg-slate-800">
                         <Mail className="h-4 w-4" aria-hidden="true" /> {t("Email us directly instead")}
                       </a>

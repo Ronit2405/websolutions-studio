@@ -47,7 +47,7 @@ export function PrivacyPage() {
       </section>
       <section>
         <h2>{t("4. Email delivery")}</h2>
-        <p>{t("Inquiry submissions are delivered to the studio by email using a transactional email provider (Resend). Your inquiry details are transmitted to that provider only for the purpose of delivering the notification email. No email API keys or secrets are stored in the browser.")}</p>
+        <p>{t("Inquiry submissions are sent through EmailJS to deliver the notification email configured for the studio. The form uses EmailJS's browser SDK and a Public Key; no EmailJS Private Key or server secret is included in the browser.")}</p>
       </section>
       <section>
         <h2>{t("5. Data retention")}</h2>
