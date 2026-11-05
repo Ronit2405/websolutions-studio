@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import AutomationFlow from "./components/AutomationFlow";
 import Services from "./components/Services";
 import WhyUs from "./components/WhyUs";
 import About from "./components/About";
@@ -90,6 +91,7 @@ export default function App() {
       ) : (
         <main id="main">
           <Hero />
+          <AutomationFlow />
           <Services onSelectService={handleSelectService} />
           <WhyUs />
           <About />

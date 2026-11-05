@@ -19,7 +19,7 @@ export default function Hero() {
               Build <span className="text-[#2563EB]">Smarter.</span> Work Better. Grow Faster.
             </h1>
             <p className="mt-5 max-w-xl text-[16.5px] leading-relaxed text-slate-600 sm:text-[17.5px]">
-              We help businesses go digital with professional websites, intelligent automation and custom AI-powered solutions.
+              Turn missed calls, slow follow-ups and repetitive admin into faster, more reliable customer service. Our websites, AI calling and workflow automation help your team respond sooner, keep work moving and win back time—with people in control when a customer needs extra help.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a
