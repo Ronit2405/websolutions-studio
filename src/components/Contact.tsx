@@ -305,7 +305,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                   <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3.5" role="alert">
                     <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
                     <p className="text-[13.5px] leading-relaxed text-amber-800">
-                      <strong>Email delivery is not connected yet.</strong> You can still fill this form, but sending will only work once the Resend email service is configured (see <code className="rounded bg-amber-100 px-1">DEPLOYMENT.md</code>). Until then, please use the direct email option below.
+                      <strong>Email sending is temporarily unavailable.</strong> This form is ready, but the studio&apos;s email provider still needs to be connected. Your message will not be delivered by this form yet. Please use the direct email option in this section for now.
                     </p>
                   </div>
                 )}

@@ -50,8 +50,10 @@ Variables** (Production + Preview):
 | `SEND_CUSTOMER_CONFIRMATION` | `true` to also email the customer | Optional |
 | `VITE_OWNER_EMAIL` | Public email shown on the site | Optional |
 
-> Replace `hello@websolutionsstudio.com` everywhere with your real inbox
-> address. `OWNER_EMAIL` is the single source of truth for notifications.
+> The public contact address is `rontisundrani0104@gmail.com`. Set the same
+> address as `OWNER_EMAIL` in Vercel so inquiry notifications reach the studio
+> inbox. `OWNER_EMAIL` is the single source of truth for notifications; the
+> Resend API key and verified sender address are still required to enable delivery.
 
 ## 4. Deploy on Vercel
 

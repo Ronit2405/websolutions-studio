@@ -24,10 +24,10 @@ export default function Services({ onSelectService }: Props) {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[380px_1fr] lg:gap-8">
+        <div className="mt-10 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-8">
           {/* Selector */}
           <div className="reveal" role="tablist" aria-label="Services">
-            <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+            <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {SERVICES.map((s, i) => {
                 const Icon = s.icon;
                 const selected = s.id === activeId;
@@ -38,7 +38,7 @@ export default function Services({ onSelectService }: Props) {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => setActiveId(s.id)}
-                    className={`flex min-w-[240px] items-center gap-3.5 rounded-xl border p-4 text-left transition-all lg:min-w-0 ${
+                    className={`flex min-w-0 items-center gap-3 rounded-xl border p-3 text-left transition-all sm:p-4 ${
                       selected
                         ? "border-[#2563EB] bg-blue-50/60 shadow-sm"
                         : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
@@ -54,7 +54,7 @@ export default function Services({ onSelectService }: Props) {
                     <span className="min-w-0">
                       <span className="flex items-center gap-2">
                         <span className="text-[11px] font-bold tracking-widest text-slate-400">0{i + 1}</span>
-                        <span className={`block truncate text-[14.5px] font-bold leading-snug ${selected ? "text-[#0B1220]" : "text-slate-700"}`}>
+                        <span className={`block whitespace-normal break-words text-[14px] font-bold leading-snug sm:text-[14.5px] ${selected ? "text-[#0B1220]" : "text-slate-700"}`}>
                           {s.title}
                         </span>
                       </span>
@@ -67,7 +67,7 @@ export default function Services({ onSelectService }: Props) {
           </div>
 
           {/* Detail panel */}
-          <div className="reveal rounded-2xl border border-slate-200 bg-[#F8FAFC] p-6 sm:p-8" role="tabpanel" aria-live="polite">
+          <div className="reveal min-w-0 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-5 sm:p-8" role="tabpanel" aria-live="polite">
             <div className="flex items-start gap-4">
               <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#2563EB] text-white sm:flex">
                 <ActiveIcon className="h-6 w-6" aria-hidden="true" />

@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const OWNER_EMAIL =
-  (import.meta as any).env?.VITE_OWNER_EMAIL || "hello@websolutionsstudio.com";
+  (import.meta as any).env?.VITE_OWNER_EMAIL || "rontisundrani0104@gmail.com";
 
 export interface Service {
   id: string;
@@ -76,7 +76,7 @@ export const SERVICES: Service[] = [
     title: "AI Calling Solutions",
     short: "Smarter business communication",
     description:
-      "Make business communication smarter with AI-powered calling solutions designed to handle repetitive communication tasks.",
+      "Respond to routine customer calls and follow-ups faster. An AI voice agent can answer approved FAQs, capture and qualify leads, book appointments, and pass complex or sensitive conversations to your team.",
     includes: [
       "AI Voice Calling Agents",
       "Automated Customer Calls",
