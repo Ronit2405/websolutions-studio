@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const OWNER_EMAIL =
-  (import.meta as any).env?.VITE_OWNER_EMAIL || "hello@websolutionsstudio.com";
+  (import.meta as any).env?.VITE_OWNER_EMAIL || "ronitsundrani0104@gmail.com";
 
 export interface Service {
   id: string;
@@ -115,10 +115,11 @@ export const SERVICE_OPTIONS = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "#/home" },
+  { label: "Services", href: "#/services" },
+  { label: "About", href: "#/about" },
+  { label: "Our Work", href: "#/work" },
+  { label: "Contact", href: "#/contact" },
 ];
 
 export const IMAGES = {

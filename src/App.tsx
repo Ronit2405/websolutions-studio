@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { ArrowUp } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -9,15 +9,22 @@ import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { PrivacyPage, TermsPage, NotFoundPage } from "./components/Legal";
+import { useLanguage } from "./i18n";
 
-type Route = "home" | "privacy" | "terms" | "404";
+type Route = "home" | "services" | "about" | "work" | "contact" | "privacy" | "terms" | "404";
 
 function routeFromHash(): Route {
-  const h = window.location.hash;
-  if (h === "#/privacy") return "privacy";
-  if (h === "#/terms") return "terms";
-  if (h.startsWith("#/")) return "404";
-  return "home";
+  const hash = window.location.hash;
+  const slug = hash.startsWith("#/") ? hash.slice(2).split(/[/?]/)[0] : hash.slice(1);
+
+  if (!slug || slug === "home") return "home";
+  if (slug === "services") return "services";
+  if (slug === "about") return "about";
+  if (slug === "work" || slug === "portfolio") return "work";
+  if (slug === "contact") return "contact";
+  if (slug === "privacy") return "privacy";
+  if (slug === "terms") return "terms";
+  return hash.startsWith("#/") ? "404" : "home";
 }
 
 function useReveal(route: Route) {
@@ -33,6 +40,7 @@ function useReveal(route: Route) {
 }
 
 function BackToTop() {
+  const { t } = useLanguage();
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 600);
@@ -44,7 +52,7 @@ function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="Back to top"
+      aria-label={t("Back to top")}
       className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[#0B1220] text-white shadow-lg transition-colors hover:bg-[#2563EB]"
     >
       <ArrowUp className="h-5 w-5" aria-hidden="true" />
@@ -53,13 +61,14 @@ function BackToTop() {
 }
 
 export default function App() {
+  const { t } = useLanguage();
   const [route, setRoute] = useState<Route>(() => routeFromHash());
   const [selectedService, setSelectedService] = useState("");
 
   useEffect(() => {
     const onHash = () => {
       setRoute(routeFromHash());
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, left: 0 });
     };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
@@ -69,34 +78,66 @@ export default function App() {
 
   const handleSelectService = useCallback((formValue: string) => {
     setSelectedService(formValue);
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    window.location.hash = "#/contact";
   }, []);
+
+  let pageContent: ReactNode;
+  switch (route) {
+    case "services":
+      pageContent = <Services onSelectService={handleSelectService} />;
+      break;
+    case "about":
+      pageContent = <><About /><WhyUs /></>;
+      break;
+    case "work":
+      pageContent = <Portfolio />;
+      break;
+    case "contact":
+      pageContent = <Contact selectedService={selectedService} onServiceChange={setSelectedService} />;
+      break;
+    case "privacy":
+      pageContent = <PrivacyPage />;
+      break;
+    case "terms":
+      pageContent = <TermsPage />;
+      break;
+    case "404":
+      pageContent = <NotFoundPage />;
+      break;
+    default:
+      pageContent = <Hero />;
+  }
+
+  useEffect(() => {
+    const pageTitles: Record<Route, string> = {
+      home: "WebSolutions Studio — Smart Digital Solutions for Growing Businesses",
+      services: "Services — WebSolutions Studio",
+      about: "About Us — WebSolutions Studio",
+      work: "Our Work — WebSolutions Studio",
+      contact: "Contact — WebSolutions Studio",
+      privacy: "Privacy Policy — WebSolutions Studio",
+      terms: "Terms & Conditions — WebSolutions Studio",
+      "404": "Page Not Found — WebSolutions Studio",
+    };
+    document.title = t(pageTitles[route]);
+  }, [route, t]);
 
   return (
     <div className="min-h-screen bg-white">
       <a
-        href="#main"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main-content")?.focus();
+        }}
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-[#2563EB] focus:px-4 focus:py-2 focus:text-white"
       >
-        Skip to content
+        {t("Skip to content")}
       </a>
-      <Navbar />
-      {route === "privacy" ? (
-        <PrivacyPage />
-      ) : route === "terms" ? (
-        <TermsPage />
-      ) : route === "404" ? (
-        <NotFoundPage />
-      ) : (
-        <main id="main">
-          <Hero />
-          <Services onSelectService={handleSelectService} />
-          <WhyUs />
-          <About />
-          <Portfolio />
-          <Contact selectedService={selectedService} onServiceChange={setSelectedService} />
-        </main>
-      )}
+      <Navbar activePage={route} />
+      <main id="main-content" tabIndex={-1} key={route} className="min-w-0 outline-none">
+        {pageContent}
+      </main>
       <Footer />
       <BackToTop />
     </div>
