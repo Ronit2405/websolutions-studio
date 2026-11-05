@@ -1,4 +1,4 @@
-import { Search, Lightbulb, Hammer, LifeBuoy, Camera } from "lucide-react";
+import { Search, Lightbulb, Hammer, LifeBuoy } from "lucide-react";
 
 const STEPS = [
   { icon: Search, title: "Understand", text: "We learn your requirements and current process." },
@@ -57,23 +57,17 @@ export default function About() {
             </div>
           </div>
 
-          {/* Founder placeholder */}
+          {/* Founder portrait */}
           <div className="reveal">
             <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="relative flex aspect-[4/5] flex-col items-center justify-center bg-[#0B1220] px-8 text-center sm:aspect-[5/5]">
-                <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
-                <div className="relative">
-                  <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border-2 border-dashed border-white/30 bg-white/5">
-                    <span className="font-[Manrope] text-[34px] font-extrabold tracking-tight text-white">RS</span>
-                  </div>
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-semibold text-slate-200 ring-1 ring-white/15">
-                    <Camera className="h-3.5 w-3.5" aria-hidden="true" />
-                    Founder photo placeholder
-                  </div>
-                  <p className="mt-4 text-[13px] leading-relaxed text-slate-400">
-                    Replace this placeholder with an actual photograph when available.
-                  </p>
-                </div>
+              <div className="aspect-[3/4] overflow-hidden bg-[#0B1220]">
+                <img
+                  src="/images/ronit-sundrani.jpg"
+                  alt="Ronit Sundrani, founder of WebSolutions Studio"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <figcaption className="flex items-center justify-between gap-4 px-6 py-5">
                 <div>
