@@ -20,7 +20,13 @@ const pad = (index: number) => `0${index + 1}`;
 
 export default function Services({ onSelectService }: Props) {
   const { t } = useLanguage();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const slug = window.location.hash.startsWith("#/services/")
+      ? window.location.hash.slice("#/services/".length).split(/[/?]/)[0]
+      : "";
+    const index = SERVICES.findIndex((service) => service.id === slug);
+    return index >= 0 ? index : 0;
+  });
   const [detailsOpen, setDetailsOpen] = useState(false);
   const viewerRef = useRef<HTMLDivElement>(null);
   const total = SERVICES.length;
