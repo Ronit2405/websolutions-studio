@@ -265,6 +265,12 @@ const HINDI_TRANSLATIONS: Record<string, string> = {
   "Bastar, Chhattisgarh": "बस्तर, छत्तीसगढ़",
   "Homestay in Bastar": "बस्तर में होमस्टे",
   "A warm homestay experience in the heart of Bastar.": "बस्तर के बीचों-बीच एक अपनापन भरा होमस्टे अनुभव।",
+  "Project Video": "प्रोजेक्ट वीडियो",
+  "A short walkthrough video of this project will be added here soon.": "इस प्रोजेक्ट का छोटा वॉकथ्रू वीडियो जल्दी ही यहाँ जोड़ा जाएगा।",
+  "Test Login Details": "टेस्ट लॉगिन जानकारी",
+  "Login ID": "लॉगिन आईडी",
+  "Password": "पासवर्ड",
+  "Use these details to test the live system.": "लाइव सिस्टम टेस्ट करने के लिए इन जानकारी का उपयोग करें।",
 
   "Quick Links": "ज़रूरी लिंक",
   "Digital Management": "डिजिटल प्रबंधन",

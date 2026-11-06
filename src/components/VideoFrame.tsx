@@ -26,19 +26,21 @@ export function toEmbedUrl(url: string): string | null {
 }
 
 interface VideoFrameProps {
-  /** Per-service video link. Leave null to keep the reserved placeholder box. */
+  /** Video link for this slot. Leave null to keep the reserved placeholder box. */
   video: string | null;
   title: string;
   label?: string;
+  /** Optional line shown inside the placeholder (already translated). */
+  note?: string;
   className?: string;
 }
 
 /**
- * Reserved, responsive 16:9 video slot for a service.
+ * Reserved, responsive 16:9 video slot (services and project cards).
  * When `video` is empty it renders a polished "coming soon" frame instead of an
  * empty box, so the layout already looks finished before videos are added.
  */
-export default function VideoFrame({ video, title, label, className = "" }: VideoFrameProps) {
+export default function VideoFrame({ video, title, label, note, className = "" }: VideoFrameProps) {
   const { t } = useLanguage();
   const src = useMemo(() => (video ? toEmbedUrl(video) : null), [video]);
 
@@ -103,7 +105,7 @@ export default function VideoFrame({ video, title, label, className = "" }: Vide
         {t("Video coming soon")}
       </p>
       <p className="relative mt-1 hidden max-w-[18rem] text-[12px] leading-relaxed text-slate-300 sm:block sm:max-w-sm sm:text-[12.5px]">
-        {t("We are recording a short walkthrough for this service. This space is reserved for it.")}
+        {note ?? t("We are recording a short walkthrough for this service. This space is reserved for it.")}
       </p>
 
     </div>

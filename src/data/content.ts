@@ -185,6 +185,30 @@ export const SERVICE_OPTIONS = [
   "Other",
 ];
 
+/**
+ * Project video slots for the "Our Work" page.
+ *
+ * Each project card has a reserved 16:9 video space where the project's own
+ * walkthrough video goes (in place of a screenshot). While a value is `null`
+ * the card shows a clean "video coming soon" frame, so the page never looks
+ * empty or unfinished.
+ *
+ * To add a video, replace `null` with a link:
+ *   "rice-mill": "https://youtu.be/VIDEO_ID",
+ *
+ * Supported links:
+ *  - YouTube (watch / shorts / live / youtu.be)
+ *  - Vimeo (vimeo.com/123456789)
+ *  - Direct file (mp4 / webm / ogg / mov) — place the file in `public/videos/`
+ *    and use a path like "/videos/rice-mill.mp4"
+ *
+ * Only that project's own video goes in its field.
+ */
+export const PROJECT_VIDEOS: Record<"rice-mill" | "dhurwadera", string | null> = {
+  "rice-mill": null,
+  "dhurwadera": null,
+};
+
 export const NAV_LINKS = [
   { label: "Home", href: "#/home" },
   { label: "Services", href: "#/services" },
