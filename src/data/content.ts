@@ -10,6 +10,25 @@ import {
 export const OWNER_EMAIL =
   (import.meta as any).env?.VITE_OWNER_EMAIL || "ronitsundrani0104@gmail.com";
 
+/** Public business number used for both the call button and WhatsApp chats. */
+const rawWhatsAppNumber =
+  (import.meta as any).env?.VITE_WHATSAPP_NUMBER || "917470383241";
+
+/** Digits only (with country code) — required by wa.me links. */
+export const WHATSAPP_NUMBER = String(rawWhatsAppNumber).replace(/\D/g, "");
+
+/** Number in tel: URI format so the click dials directly. */
+export const OWNER_PHONE_TEL = `+${WHATSAPP_NUMBER}`;
+
+/** Human readable number, e.g. "+91 74703 83241". */
+export const OWNER_PHONE_DISPLAY = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 7)} ${WHATSAPP_NUMBER.slice(7)}`;
+
+/** WhatsApp chat link with an optional prefilled message. */
+export function whatsappLink(message?: string) {
+  const base = `https://wa.me/${WHATSAPP_NUMBER}`;
+  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+}
+
 export interface Service {
   id: string;
   icon: LucideIcon;

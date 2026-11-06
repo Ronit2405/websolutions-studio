@@ -94,3 +94,11 @@ li {
   border-color: #dc2626;
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
 }
+
+/* Voice message player — never wider than the card, even on 320px phones */
+.voice-player {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
