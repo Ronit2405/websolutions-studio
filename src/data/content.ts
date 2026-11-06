@@ -123,7 +123,8 @@ export const NAV_LINKS = [
 ];
 
 export const IMAGES = {
-  hero: "https://images.pexels.com/photos/8102000/pexels-photo-8102000.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
+  hero: "/images/hero-workspace.webp",
+  heroFallback: "/images/hero-workspace.jpg",
   team: "https://images.pexels.com/photos/6326260/pexels-photo-6326260.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
   dev: "https://images.pexels.com/photos/5474300/pexels-photo-5474300.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
 };
