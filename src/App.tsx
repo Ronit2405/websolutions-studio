@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { ArrowUp } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import HomeServices from "./components/HomeServices";
 import Services from "./components/Services";
 import WhyUs from "./components/WhyUs";
 import About from "./components/About";
@@ -105,7 +106,12 @@ export default function App() {
       pageContent = <NotFoundPage />;
       break;
     default:
-      pageContent = <Hero />;
+      pageContent = (
+        <>
+          <Hero />
+          <HomeServices />
+        </>
+      );
   }
 
   useEffect(() => {
