@@ -280,7 +280,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
         <div className="mt-8 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-8">
           {/* Info panel */}
-          <aside className="reveal relative min-w-0 overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white sm:p-8">
+          <aside className="reveal relative order-2 min-w-0 overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white sm:p-8 lg:order-1">
             <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
             <div className="relative">
               <h3 className="font-[Manrope] text-[20px] font-extrabold">{t("What happens next")}</h3>
@@ -342,7 +342,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
           </aside>
 
           {/* Form card */}
-          <div className="reveal min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
+          <div className="reveal order-1 min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:order-2 lg:p-8">
             {status === "success" ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center py-10 text-center" role="status">
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
