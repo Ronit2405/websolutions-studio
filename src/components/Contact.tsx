@@ -23,23 +23,15 @@ import {
   whatsappLink,
 } from "../data/content";
 import { useLanguage } from "../i18n";
+import {
+  buildInquiryTemplateParams,
+  buildInquiryText,
+  type FormState,
+} from "../utils/inquiry";
 
 interface Props {
   selectedService: string;
   onServiceChange: (v: string) => void;
-}
-
-interface FormState {
-  fullName: string;
-  business: string;
-  email: string;
-  phone: string;
-  city: string;
-  service: string;
-  description: string;
-  contactMethod: string;
-  consent: boolean;
-  website: string; // honeypot
 }
 
 type Errors = Partial<Record<keyof FormState, string>>;
@@ -64,29 +56,6 @@ const EMAILJS_TEMPLATE_ID = (import.meta as any).env?.VITE_EMAILJS_TEMPLATE_ID |
 const EMAILJS_PUBLIC_KEY = (import.meta as any).env?.VITE_EMAILJS_PUBLIC_KEY || "E6u57ecGMZwvhwvEQ";
 
 type Status = "idle" | "submitting" | "success" | "error";
-
-/** Build the complete inquiry body for email delivery. */
-function buildInquiryText(
-  form: FormState,
-  descriptionText: string,
-  submittedAt: Date
-): string {
-  return [
-    "New Project Inquiry – WebSolutions Studio",
-    "",
-    `Name: ${form.fullName.trim() || "—"}`,
-    `Phone: ${form.phone.trim() || "—"}`,
-    `Email: ${form.email.trim() || "Not provided"}`,
-    `City: ${form.city.trim() || "Not provided"}`,
-    `Business: ${form.business.trim() || "Not provided"}`,
-    `Service: ${form.service || "—"}`,
-    `Preferred contact: ${form.contactMethod}`,
-    `Submitted: ${submittedAt.toLocaleString()}`,
-    "",
-    "Project description:",
-    descriptionText,
-  ].join("\n");
-}
 
 function validate(f: FormState): Errors {
   const e: Errors = {};
@@ -173,7 +142,6 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
     } catch { /* storage unavailable — continue */ }
 
     const submitDate = new Date();
-    const emailText = buildInquiryText(form, descriptionText, submitDate);
 
     isSubmittingRef.current = true;
     setStatus("submitting");
@@ -184,26 +152,19 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
     // customer has no email we fall back to the studio inbox and ask for a
     // phone / WhatsApp reply instead (stated clearly inside the message).
     const replyTo = submittedEmail || OWNER_EMAIL;
-    const templateParams = {
-      name: form.fullName.trim(),
-      email: replyTo,
-      reply_to: replyTo,
-      phone: form.phone.trim(),
-      message: [
-        submittedEmail
-          ? ""
-          : "CUSTOMER DID NOT PROVIDE AN EMAIL → please reply on the phone / WhatsApp number below.",
-        emailText,
-      ]
-        .filter(Boolean)
-        .join("\n\n"),
-    };
+    const templateParams = buildInquiryTemplateParams(
+      form,
+      descriptionText,
+      submitDate,
+      submittedEmail,
+      replyTo
+    );
 
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams,
+        { ...templateParams },
         { publicKey: EMAILJS_PUBLIC_KEY }
       );
       try {
