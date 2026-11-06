@@ -41,7 +41,7 @@ export default function Navbar({ activePage }: NavbarProps) {
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-1 px-2 sm:gap-4 sm:px-6 lg:px-8">
         <Logo />
 
-        <nav className="hidden min-w-0 items-center gap-0.5 lg:flex" aria-label={t("Primary navigation")}>
+        <nav className="hidden min-w-0 items-center gap-1 lg:flex xl:gap-1.5" aria-label={t("Primary navigation")}>
           {NAV_LINKS.map((link) => {
             const page = link.href.replace("#/", "");
             const isActive = activePage === page || (page === "work" && activePage === "portfolio");
@@ -50,14 +50,11 @@ export default function Navbar({ activePage }: NavbarProps) {
                 key={link.href}
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative whitespace-nowrap rounded-md px-3 py-2 text-[13.5px] font-semibold transition-colors xl:px-3.5 xl:text-[14px] ${
-                  isActive ? "text-[#2563EB]" : "text-slate-600 hover:text-[#0B1220]"
+                className={`whitespace-nowrap rounded-lg px-2.5 py-2.5 text-[14px] font-bold tracking-[-0.01em] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 xl:px-3.5 xl:text-[15px] ${
+                  isActive ? "bg-blue-50 text-[#1D4ED8]" : "text-slate-700 hover:bg-slate-100 hover:text-[#2563EB]"
                 }`}
               >
                 {t(link.label)}
-                <span
-                  className={`absolute inset-x-3.5 -bottom-[1px] h-[2px] rounded-full bg-[#2563EB] transition-opacity ${isActive ? "opacity-100" : "opacity-0"}`}
-                />
               </a>
             );
           })}
@@ -107,8 +104,8 @@ export default function Navbar({ activePage }: NavbarProps) {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   aria-current={isActive ? "page" : undefined}
-                  className={`rounded-md px-3 py-3 text-[15px] font-semibold transition-colors ${
-                    isActive ? "bg-blue-50 text-[#2563EB]" : "text-slate-700 hover:bg-slate-50 hover:text-[#0B1220]"
+                  className={`rounded-lg px-3 py-3 text-[15px] font-bold tracking-[-0.01em] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-inset ${
+                    isActive ? "bg-blue-50 text-[#1D4ED8]" : "text-slate-700 hover:bg-slate-100 hover:text-[#2563EB]"
                   }`}
                 >
                   {t(link.label)}
