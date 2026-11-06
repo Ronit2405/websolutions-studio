@@ -15,8 +15,20 @@ export interface Service {
   icon: LucideIcon;
   title: string;
   short: string;
+  /** One-line hook shown on the service card. */
+  tagline: string;
   description: string;
+  /** Two or three scannable value points shown under the video. */
+  quickPoints: string[];
+  /** Who this service is a good fit for. */
+  bestFor: string;
   includes: string[];
+  /**
+   * Per-service explainer video slot.
+   * Paste a YouTube / Vimeo / MP4 link here (or null to keep the reserved
+   * placeholder box). Only links for this service go in this field.
+   */
+  video: string | null;
   formValue: string;
 }
 
@@ -26,6 +38,14 @@ export const SERVICES: Service[] = [
     icon: Globe,
     title: "Website Development",
     short: "Professional online presence",
+    tagline: "Your website should sell while you sleep.",
+    quickPoints: [
+      "Looks sharp on every phone and desktop",
+      "Fast loading pages built to convert visitors",
+      "You can update content without a developer",
+    ],
+    bestFor: "Businesses that need a credible online presence and more enquiries.",
+    video: null,
     description:
       "Professional, responsive and custom-built websites designed to establish your online presence and help your business grow.",
     includes: [
@@ -42,6 +62,14 @@ export const SERVICES: Service[] = [
     icon: FolderSync,
     title: "Digital Document & Workflow Management",
     short: "Paperless, organized operations",
+    tagline: "Stop chasing papers. Start finding files in seconds.",
+    quickPoints: [
+      "Every record searchable in one place",
+      "No more lost documents or duplicate entries",
+      "Approvals and follow-ups happen on time",
+    ],
+    bestFor: "Shops, offices and teams still running on registers, files and WhatsApp forwards.",
+    video: null,
     description:
       "Reduce paperwork and manage your business processes digitally with organized and efficient systems.",
     includes: [
@@ -59,6 +87,14 @@ export const SERVICES: Service[] = [
     icon: Bot,
     title: "AI Agents & Automation",
     short: "Intelligent task automation",
+    tagline: "Let AI handle the boring replies.",
+    quickPoints: [
+      "Replies to customers instantly, 24×7",
+      "Leads captured and organised automatically",
+      "Your team focuses only on real work",
+    ],
+    bestFor: "Businesses getting the same customer questions again and again.",
+    video: null,
     description:
       "Automate repetitive business tasks using intelligent AI agents that help improve efficiency and save time.",
     includes: [
@@ -75,6 +111,14 @@ export const SERVICES: Service[] = [
     icon: PhoneCall,
     title: "AI Calling Solutions",
     short: "Smarter business communication",
+    tagline: "Every call answered. No lead left behind.",
+    quickPoints: [
+      "Routine calls handled automatically",
+      "Appointments booked without staff effort",
+      "Follow-ups never get forgotten",
+    ],
+    bestFor: "Sales teams, clinics, service businesses and anyone missing calls.",
+    video: null,
     description:
       "Make business communication smarter with AI-powered calling solutions designed to handle repetitive communication tasks.",
     includes: [
@@ -91,6 +135,14 @@ export const SERVICES: Service[] = [
     icon: Blocks,
     title: "Custom Digital Solutions",
     short: "Built around your business",
+    tagline: "Built for how your business actually runs.",
+    quickPoints: [
+      "Made around your exact process",
+      "One dashboard for your real data",
+      "Grows with your business",
+    ],
+    bestFor: "Businesses whose process does not fit any ready-made software.",
+    video: null,
     description:
       "Every business has different requirements. We develop customized digital solutions according to your business needs.",
     includes: [
