@@ -111,7 +111,7 @@ export default function HomeServices() {
             return (
               <a
                 key={item.id}
-                href="#/services"
+                href={`#/services/${item.id}`}
                 className="reveal group flex min-w-0 flex-col justify-between rounded-2xl border border-slate-200 bg-[#F8FAFC]/75 p-4 transition-all duration-200 hover:border-[#2563EB]/40 hover:bg-white hover:shadow-[0_16px_36px_-18px_rgba(37,99,235,0.28)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 sm:p-6"
               >
                 <div className="min-w-0">
