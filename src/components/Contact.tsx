@@ -67,6 +67,48 @@ const EMAILJS_PUBLIC_KEY = (import.meta as any).env?.VITE_EMAILJS_PUBLIC_KEY || 
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+type InquiryMode = "email" | "share" | "waLink";
+
+/**
+ * The exact inquiry text sent on email and on WhatsApp. The detail block
+ * (Name → Phone → Email → City → Business → Service → Preferred contact →
+ * Time → Description) is identical on both channels; only the trailing
+ * voice-message note changes depending on how the audio will travel.
+ */
+function buildInquiryText(
+  form: FormState,
+  descriptionText: string,
+  hasVoiceNote: boolean,
+  voiceSeconds: number,
+  submittedAt: Date,
+  mode: InquiryMode
+): string {
+  const voiceLine = hasVoiceNote
+    ? mode === "share"
+      ? `VOICE MESSAGE: Yes — the customer recorded a voice message (${formatDuration(voiceSeconds)}). The audio file is attached with this message via the WhatsApp share sheet.`
+      : mode === "waLink"
+        ? `VOICE MESSAGE: Yes — the customer recorded a voice message (${formatDuration(voiceSeconds)}). This browser cannot attach the audio file automatically — please ask the customer to record it here in this chat.`
+        : `VOICE MESSAGE: Yes — the customer recorded a ${formatDuration(voiceSeconds)} voice message. It is handed off to the studio's WhatsApp (${OWNER_PHONE_DISPLAY}) at the moment of submission — please check WhatsApp for the audio file.`
+    : "VOICE MESSAGE: No";
+  return [
+    "New Project Inquiry – WebSolutions Studio",
+    "",
+    `Name: ${form.fullName.trim() || "—"}`,
+    `Phone: ${form.phone.trim() || "—"}`,
+    `Email: ${form.email.trim() || "Not provided"}`,
+    `City: ${form.city.trim() || "Not provided"}`,
+    `Business: ${form.business.trim() || "Not provided"}`,
+    `Service: ${form.service || "—"}`,
+    `Preferred contact: ${form.contactMethod}`,
+    `Submitted: ${submittedAt.toLocaleString()}`,
+    "",
+    "Project description:",
+    descriptionText,
+    "",
+    voiceLine,
+  ].join("\n");
+}
+
 function validate(f: FormState, hasVoiceNote: boolean): Errors {
   const e: Errors = {};
   if (!f.fullName.trim()) e.fullName = "Please enter your name.";
@@ -91,8 +133,8 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [serverMessage, setServerMessage] = useState("");
   const [submittedAt, setSubmittedAt] = useState<string>("");
-  const [lastVoiceNote, setLastVoiceNote] = useState<{ seconds: number; fileName: string; url: string; blob: Blob } | null>(null);
-  const [shareFallback, setShareFallback] = useState(false);
+  const [lastVoiceNote, setLastVoiceNote] = useState<{ seconds: number } | null>(null);
+  const [voiceShareStatus, setVoiceShareStatus] = useState<"" | "pending" | "shared" | "fallback" | "cancelled">("");
   const isSubmittingRef = useRef(false);
   const recorder = useVoiceRecorder();
 
@@ -110,22 +152,14 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
   const mailtoHref = useMemo(() => {
     const subject = encodeURIComponent(t("New Project Inquiry – WebSolutions Studio"));
+    const descriptionText =
+      form.description.trim() ||
+      (recorder.note ? "No typed description — the customer recorded a voice message instead." : "");
     const body = encodeURIComponent(
-      [
-        `${t("Name:")} ${form.fullName || "—"}`,
-        `${t("Business:")} ${form.business || "—"}`,
-        `${t("Email:")} ${form.email || "—"}`,
-        `${t("Phone:")} ${form.phone || "—"}`,
-        `${t("City:")} ${form.city || "—"}`,
-        `${t("Interested in:")} ${form.service ? t(form.service) : "—"}`,
-        `${t("Preferred contact:")} ${t(form.contactMethod)}`,
-        "",
-        t("Project description:"),
-        form.description || "—",
-      ].join("\n")
+      buildInquiryText(form, descriptionText, Boolean(recorder.note), recorder.note?.seconds ?? 0, new Date(), "email")
     );
     return `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
-  }, [form, t]);
+  }, [form, recorder.note, t]);
 
   async function handleSubmit(ev: FormEvent) {
     ev.preventDefault();
@@ -170,6 +204,59 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       }
     } catch { /* storage unavailable — continue */ }
 
+    const submitDate = new Date();
+    const recSeconds = recorder.note?.seconds ?? 0;
+    const emailText = buildInquiryText(form, descriptionText, hasVoiceNote, recSeconds, submitDate, "email");
+    const waShareText = buildInquiryText(form, descriptionText, hasVoiceNote, recSeconds, submitDate, "share");
+    const waLinkText = buildInquiryText(form, descriptionText, hasVoiceNote, recSeconds, submitDate, "waLink");
+
+    // Hand the recording to WhatsApp immediately — this runs inside the submit
+    // tap, so the browser still treats it as a user gesture. If file sharing is
+    // supported (Web Share Level 2) the OS share sheet opens with the audio file;
+    // otherwise the WhatsApp chat opens with the full inquiry prefilled.
+    if (hasVoiceNote && recorder.note) {
+      const note = recorder.note;
+      const file = new File([note.blob], note.fileName, { type: note.blob.type || "audio/webm" });
+      const nav = navigator as Navigator & {
+        canShare?: (data?: ShareData) => boolean;
+        share?: (data?: ShareData) => Promise<void>;
+      };
+      let handedViaShareSheet = false;
+      try {
+        if (
+          typeof nav.share === "function" &&
+          typeof nav.canShare === "function" &&
+          nav.canShare({ files: [file] })
+        ) {
+          handedViaShareSheet = true;
+          setVoiceShareStatus("pending");
+          nav
+            .share({ files: [file], text: waShareText })
+            .then(() => setVoiceShareStatus("shared"))
+            .catch((err) => {
+              if ((err as { name?: string })?.name === "AbortError") {
+                setVoiceShareStatus("cancelled");
+              } else {
+                try {
+                  window.open(whatsappLink(waLinkText), "_blank", "noopener,noreferrer");
+                } catch { /* popup blocked — the email still carries the inquiry */ }
+                setVoiceShareStatus("fallback");
+              }
+            });
+        }
+      } catch {
+        handedViaShareSheet = false;
+      }
+      if (!handedViaShareSheet) {
+        try {
+          window.open(whatsappLink(waLinkText), "_blank", "noopener,noreferrer");
+        } catch { /* popup blocked — the email still carries the inquiry */ }
+        setVoiceShareStatus("fallback");
+      }
+    } else {
+      setVoiceShareStatus("");
+    }
+
     isSubmittingRef.current = true;
     setStatus("submitting");
     setServerMessage("");
@@ -188,18 +275,10 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
         submittedEmail
           ? ""
           : "CUSTOMER DID NOT PROVIDE AN EMAIL → please reply on the phone / WhatsApp number below.",
-        descriptionText,
-        "",
-        `Business / Company: ${form.business.trim() || "Not provided"}`,
-        `City: ${form.city.trim() || "Not provided"}`,
-        `Customer email: ${submittedEmail || "Not provided"}`,
-        `Phone / WhatsApp: ${form.phone.trim()}`,
-        `Service: ${form.service}`,
-        `Preferred contact method: ${form.contactMethod}`,
-        hasVoiceNote
-          ? `VOICE MESSAGE: Yes — the customer recorded a ${formatDuration(recorder.note?.seconds || 0)} voice message here and is being taken to the studio's WhatsApp (${OWNER_PHONE_DISPLAY}) to send it. Please check WhatsApp for the voice note.`
-          : "VOICE MESSAGE: No",
-      ].join("\n"),
+        emailText,
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
     };
 
     try {
@@ -212,16 +291,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       try {
         sessionStorage.setItem("wss_last_emailjs_submission", JSON.stringify({ fingerprint, at: Date.now() }));
       } catch { /* ignore */ }
-      setLastVoiceNote(
-        hasVoiceNote && recorder.note
-          ? {
-              seconds: recorder.note.seconds,
-              fileName: recorder.note.fileName,
-              url: recorder.note.url,
-              blob: recorder.note.blob,
-            }
-          : null
-      );
+      setLastVoiceNote(hasVoiceNote && recorder.note ? { seconds: recorder.note.seconds } : null);
       setSubmittedAt(new Date().toLocaleString());
       setStatus("success");
       onServiceChange("");
@@ -241,55 +311,9 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
     setStatus("idle");
     setServerMessage("");
     setLastVoiceNote(null);
+    setVoiceShareStatus("");
     recorder.discardNote();
   }
-
-  const whatsAppVoiceHref = useMemo(() => {
-    const lines = [
-      `${t("Hello WebSolutions Studio! I just submitted the contact form.")}`,
-      `${t("Name:")} ${form.fullName.trim() || "—"}`,
-      `${t("Phone:")} ${form.phone.trim() || "—"}`,
-      `${t("Interested in:")} ${form.service ? t(form.service) : "—"}`,
-    ];
-    // Only mention the voice note when the email was actually confirmed sent.
-    if (lastVoiceNote) {
-      lines.push("", t("Sending my voice message in the next step."));
-    }
-    return whatsappLink(lines.join("\n"));
-  }, [form.fullName, form.phone, form.service, lastVoiceNote, t]);
-
-  async function shareVoiceOnWhatsApp() {
-    if (!lastVoiceNote) return;
-    const file = new File([lastVoiceNote.blob], lastVoiceNote.fileName, {
-      type: lastVoiceNote.blob.type || "audio/webm",
-    });
-    const nav = navigator as Navigator & {
-      canShare?: (data?: ShareData) => boolean;
-      share?: (data?: ShareData) => Promise<void>;
-    };
-    if (nav.share && nav.canShare?.({ files: [file] })) {
-      try {
-        await nav.share({ files: [file], text: t("Voice message for WebSolutions Studio") });
-        return;
-      } catch (err) {
-        if ((err as { name?: string })?.name === "AbortError") return;
-      }
-    }
-    setShareFallback(true);
-    window.open(whatsAppVoiceHref, "_blank", "noopener,noreferrer");
-  }
-
-  const voiceNoteHref = useMemo(
-    () =>
-      whatsappLink(
-        [
-          t("Hello WebSolutions Studio! I would like to send a voice message about my requirement."),
-          `${t("Name:")} ${form.fullName.trim() || "—"}`,
-          `${t("Interested in:")} ${form.service ? t(form.service) : "—"}`,
-        ].join("\n")
-      ),
-    [form.fullName, form.service, t]
-  );
 
   const inputCls = (hasError?: string) => `field ${hasError ? "field-error" : ""}`;
 
@@ -412,62 +436,25 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                   <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
                 </span>
                 <h3 className="mt-5 font-[Manrope] text-[22px] font-extrabold text-[#0B1220]">{t("Inquiry received")}</h3>
-                <p className="mt-3 max-w-md text-[15px] leading-relaxed text-slate-600">
+                <p className="mt-3 max-w-md break-words text-[15px] leading-relaxed text-slate-600">
                   {lastVoiceNote
-                    ? t("Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. One last step: tap the WhatsApp button below to send your voice message.")
+                    ? t("Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. Your voice message was handed to WhatsApp the moment you tapped Send.")
                     : t("Thank you for contacting WebSolutions Studio! Your inquiry has been submitted successfully. We'll get in touch with you soon.")}
                 </p>
 
                 {lastVoiceNote && (
-                  <div className="mt-5 w-full max-w-md min-w-0 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 text-left">
-                    <p className="flex items-center gap-2 text-[13px] font-bold text-emerald-800">
-                      <Mic className="h-4 w-4 shrink-0" aria-hidden="true" />
-                      {t("Your voice message")} · {formatDuration(lastVoiceNote.seconds)}
-                    </p>
-                    <audio
-                      controls
-                      preload="metadata"
-                      src={lastVoiceNote.url}
-                      aria-label={t("Voice message preview")}
-                      className="voice-player mt-2"
-                    />
-                    <button
-                      type="button"
-                      onClick={shareVoiceOnWhatsApp}
-                      className="mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-5 py-3 text-[14px] font-bold text-[#05321A] transition-colors hover:bg-[#1EBE5A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
-                    >
-                      <MessageCircle className="h-5 w-5" aria-hidden="true" />
-                      {t("Send my voice message on WhatsApp")}
-                    </button>
-                    <p className="mt-2 text-[12px] leading-relaxed text-emerald-900/80">
-                      {t("One tap sends your recording to WhatsApp with our chat open — just press send.")}
-                    </p>
-                    {shareFallback ? (
-                      <p className="mt-2 text-[12px] leading-relaxed text-emerald-900">
-                        {t("This browser cannot attach the recording automatically. In the WhatsApp chat that opened, press and hold the microphone and speak your message once more.")}{" "}
-                        <a
-                          href={whatsAppVoiceHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-semibold underline underline-offset-2"
-                        >
-                          {t("Open WhatsApp chat")}
-                        </a>
-                      </p>
-                    ) : (
-                      <p className="mt-1 text-[12px] leading-relaxed text-emerald-900/70">
-                        {t("If the share sheet does not appear, our WhatsApp chat opens instead — you can record there in one tap.")}{" "}
-                        <a
-                          href={whatsAppVoiceHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-semibold text-emerald-900 underline underline-offset-2"
-                        >
-                          {t("Open WhatsApp chat")}
-                        </a>
-                      </p>
-                    )}
-                  </div>
+                  <p role="status" className="mt-4 inline-flex max-w-md items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-left text-[12px] font-semibold leading-snug break-words text-emerald-800 ring-1 ring-emerald-200">
+                    <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    <span className="min-w-0 break-words">
+                      {voiceShareStatus === "shared"
+                        ? t("Voice message shared to WhatsApp — pick the WebSolutions Studio chat if asked.")
+                        : voiceShareStatus === "fallback"
+                          ? t("WhatsApp opened with your inquiry — this browser cannot attach the audio file automatically.")
+                          : voiceShareStatus === "cancelled"
+                            ? t("Voice message hand-off was dismissed — your inquiry still reached us by email.")
+                            : t("Handing your voice message to WhatsApp…")}
+                    </span>
+                  </p>
                 )}
 
                 <dl className="mt-6 w-full max-w-md rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-left text-[13.5px] sm:px-5">
@@ -521,12 +508,8 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                     <label htmlFor="email" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">
                       {t("Email Address")} <span className="font-normal text-slate-400">{t("(optional)")}</span>
                     </label>
-                    <input id="email" data-error-field={errors.email ? "" : undefined} type="email" inputMode="email" className={inputCls(errors.email)} value={form.email} onChange={(e) => set("email", e.target.value)} autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "err-email" : "hint-email"} />
-                    {errors.email ? (
-                      <p id="err-email" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.email || "")}</p>
-                    ) : (
-                      <p id="hint-email" className="mt-1 text-[11.5px] leading-relaxed text-slate-400">{t("Not everyone has an email — leave it blank if you prefer a call or WhatsApp.")}</p>
-                    )}
+                    <input id="email" data-error-field={errors.email ? "" : undefined} type="email" inputMode="email" className={inputCls(errors.email)} value={form.email} onChange={(e) => set("email", e.target.value)} autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "err-email" : undefined} />
+                    {errors.email && <p id="err-email" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.email || "")}</p>}
                   </div>
                   <div>
                     <label htmlFor="phone" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("Phone Number")} <span className="text-red-600" aria-hidden="true">*</span></label>
@@ -579,16 +562,6 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                     onDiscard={recorder.discardNote}
                   />
 
-                  <p className="mt-2 flex items-start gap-1.5 text-[11.5px] leading-relaxed text-slate-500">
-                    <Mic className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                    <span className="min-w-0">
-                      {t("Typing feels like a task?")}{" "}
-                      <a href={voiceNoteHref} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#2563EB] underline underline-offset-2">
-                        {t("Send a voice message directly on WhatsApp")}
-                      </a>{" "}
-                      {t("and tell us in your own words.")}
-                    </span>
-                  </p>
                 </div>
 
                 <fieldset className="mt-5">
@@ -652,7 +625,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                 </button>
                 <p className="mt-3 text-[12.5px] leading-relaxed text-slate-400">
                   {recorder.note
-                    ? t("Protected against spam. Submitting sends your details to the studio, then opens WhatsApp so you can send your voice message in one tap.")
+                    ? t("Protected against spam. Tapping Send emails your details to the studio and hands your voice message to WhatsApp immediately — no extra step needed.")
                     : t("Protected against spam. Submitting sends an email notification to the studio — you will only see a success message once delivery is confirmed.")}
                 </p>
               </form>
