@@ -60,7 +60,7 @@ export default function About() {
           </div>
 
           {/* Founder portrait */}
-          <div className="reveal">
+          <div className="reveal order-first lg:order-none">
             <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="aspect-[3/4] overflow-hidden bg-[#0B1220]">
                 <img
