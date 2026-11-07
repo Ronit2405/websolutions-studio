@@ -13,6 +13,7 @@ export interface FormState {
   phone: string;
   city: string;
   service: string;
+  otherService: string;
   description: string;
   contactMethod: string;
   consent: boolean;
@@ -41,6 +42,14 @@ export interface InquiryTemplateParams {
   message: string;
 }
 
+/** Include the visitor's custom service in every inquiry delivery path. */
+export function getInquiryService(form: FormState): string {
+  const otherService = form.otherService.trim();
+  return form.service === "Other" && otherService
+    ? `Other: ${otherService}`
+    : form.service;
+}
+
 /** Build the complete plain-text inquiry body (also used by the mailto fallback). */
 export function buildInquiryText(
   form: FormState,
@@ -55,7 +64,7 @@ export function buildInquiryText(
     `Email: ${form.email.trim() || "Not provided"}`,
     `City: ${form.city.trim() || "Not provided"}`,
     `Business: ${form.business.trim() || "Not provided"}`,
-    `Service: ${form.service || "—"}`,
+    `Service: ${getInquiryService(form) || "—"}`,
     `Preferred contact: ${form.contactMethod}`,
     `Submitted: ${submittedAt.toLocaleString()}`,
     "",
@@ -83,7 +92,7 @@ export function buildInquiryTemplateParams(
     email: submittedEmail || "Not provided",
     phone: form.phone.trim(),
     city: form.city.trim() || "Not provided",
-    service: form.service,
+    service: getInquiryService(form),
     description: descriptionText,
     contactMethod: form.contactMethod,
     submittedAt: submittedAt.toLocaleString(),

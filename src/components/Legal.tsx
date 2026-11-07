@@ -81,7 +81,7 @@ export function TermsPage() {
       </section>
       <section>
         <h2>{t("2. Services")}</h2>
-        <p>{t("WebSolutions Studio provides website development, digital document and workflow management, AI agents and automation, AI calling solutions, and custom digital solutions. Service scope, timelines, and pricing are agreed individually for each project and are not binding until confirmed in writing.")}</p>
+        <p>{t("WebSolutions Studio provides website development, app development, AI agents and automation, AI calling solutions, custom digital solutions, and digital document and workflow management. Service scope, timelines, and pricing are agreed individually for each project and are not binding until confirmed in writing.")}</p>
       </section>
       <section>
         <h2>{t("3. Project inquiries")}</h2>
