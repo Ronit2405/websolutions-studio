@@ -26,7 +26,7 @@ export default function About() {
               </p>
               <p>{t("I started WebSolutions Studio with a simple vision: helping businesses simplify their work through technology.")}</p>
               <p>
-                {t("We focus on building professional websites, digitizing business processes and developing AI-powered solutions that make everyday business operations more efficient.")}
+                {t("We focus on building professional websites, mobile apps and AI-powered solutions, and digitizing business processes to make everyday operations more efficient.")}
               </p>
               <p>
                 {t("Our approach is simple. We first understand your requirements, identify the right solution and then work towards delivering something practical and valuable for your business.")}

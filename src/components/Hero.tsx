@@ -25,7 +25,7 @@ export default function Hero() {
               )}
             </h1>
             <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-slate-600 sm:text-[17.5px]">
-              {t("We help businesses go digital with professional websites, intelligent automation and custom AI-powered solutions.")}
+              {t("We help businesses go digital with professional websites, mobile apps, intelligent automation and custom AI-powered solutions.")}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center">
               <a

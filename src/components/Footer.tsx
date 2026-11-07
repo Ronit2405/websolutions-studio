@@ -12,10 +12,11 @@ const QUICK = [
 
 const SERVICES_FOOTER = [
   { label: "Website Development", href: "#/services" },
-  { label: "Digital Management", href: "#/services" },
+  { label: "App Development", href: "#/services/app-development" },
   { label: "AI Automation", href: "#/services" },
   { label: "AI Calling Solutions", href: "#/services" },
   { label: "Custom Software", href: "#/services" },
+  { label: "Digital Management", href: "#/services" },
 ];
 
 export default function Footer() {
@@ -39,7 +40,7 @@ export default function Footer() {
               {t("Smart Digital Solutions for Growing Businesses.")}
             </p>
             <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-slate-500">
-              {t("Professional websites, digital workflow management, AI automation and intelligent communication solutions.")}
+              {t("Professional websites, mobile apps, AI automation, intelligent communication and digital workflow management.")}
             </p>
           </div>
 

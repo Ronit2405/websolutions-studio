@@ -6,6 +6,7 @@ import {
   FolderSync,
   Globe,
   PhoneCall,
+  Smartphone,
   type LucideIcon,
 } from "lucide-react";
 import { useLanguage } from "../i18n";
@@ -30,13 +31,13 @@ const HOME_SERVICES: HomeServiceItem[] = [
     highlights: ["Business Websites", "Landing Pages", "Custom Web Apps"],
   },
   {
-    id: "document-workflow",
-    icon: FolderSync,
-    title: "Digital Document & Workflow Management",
-    tagline: "Organize. Automate. Grow.",
+    id: "app-development",
+    icon: Smartphone,
+    title: "App Development",
+    tagline: "Your Business. On the Go.",
     summary:
-      "Move away from manual paperwork with organized digital records, forms, and smooth daily workflows.",
-    highlights: ["Digital Records", "Smart Forms", "Workflow Automation"],
+      "Custom Android and iOS apps that connect with your customers and simplify everyday business tasks.",
+    highlights: ["Android Apps", "iOS Apps", "Cross-platform Apps"],
   },
   {
     id: "ai-agents",
@@ -64,6 +65,15 @@ const HOME_SERVICES: HomeServiceItem[] = [
     summary:
       "Tailor-made software, dashboards, and management systems built around how your business actually works.",
     highlights: ["Custom Software", "Management Systems", "Data Dashboards"],
+  },
+  {
+    id: "document-workflow",
+    icon: FolderSync,
+    title: "Digital Document & Workflow Management",
+    tagline: "Organize. Automate. Grow.",
+    summary:
+      "Move away from manual paperwork with organized digital records, forms, and smooth daily workflows.",
+    highlights: ["Digital Records", "Smart Forms", "Workflow Automation"],
   },
 ];
 
@@ -160,8 +170,8 @@ export default function HomeServices() {
             );
           })}
 
-          {/* 6th slot: Guidance & Services Page CTA card */}
-          <div className="reveal relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white shadow-sm sm:p-6">
+          {/* Guidance & Services Page CTA card */}
+          <div className="reveal relative flex min-w-0 flex-col justify-between overflow-hidden rounded-2xl bg-[#0B1220] p-5 text-white shadow-sm sm:col-span-2 sm:p-6 lg:col-span-3">
             <div className="bg-grid-dark pointer-events-none absolute inset-0" aria-hidden="true" />
             <div className="relative min-w-0">
               <p className="text-[11.5px] font-bold tracking-[0.14em] text-[#38BDF8] uppercase">

@@ -26,6 +26,7 @@ import { useLanguage } from "../i18n";
 import {
   buildInquiryTemplateParams,
   buildInquiryText,
+  getInquiryService,
   type FormState,
 } from "../utils/inquiry";
 
@@ -43,6 +44,7 @@ const INITIAL: FormState = {
   phone: "",
   city: "",
   service: "",
+  otherService: "",
   description: "",
   contactMethod: "Phone Call",
   consent: false,
@@ -65,6 +67,7 @@ function validate(f: FormState): Errors {
   if (!f.phone.trim()) e.phone = "Please enter your phone number.";
   else if (f.phone.replace(/\D/g, "").length < 7) e.phone = "Please enter a valid phone number.";
   if (!f.service) e.service = "Please select what you are interested in.";
+  if (f.service === "Other" && !f.otherService.trim()) e.otherService = "Please specify the service you need.";
   if (!f.description.trim()) e.description = "Please describe your requirement.";
   else if (f.description.trim().length < 10) e.description = "Please add a little more detail (at least 10 characters).";
   if (!f.consent) e.consent = "Please confirm you agree to the Privacy Policy.";
@@ -126,7 +129,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
       form.fullName.trim().toLowerCase(),
       form.email.trim().toLowerCase(),
       form.phone.trim(),
-      form.service,
+      getInquiryService(form),
       descriptionText,
     ].join("|");
     try {
@@ -317,7 +320,7 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
 
                 <dl className="mt-6 w-full max-w-md rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-left text-[13.5px] sm:px-5">
                   <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Name")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{form.fullName}</dd></div>
-                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Interested in")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{t(form.service)}</dd></div>
+                  <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Interested in")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{t(form.service)}{form.service === "Other" && form.otherService.trim() ? `: ${form.otherService.trim()}` : ""}</dd></div>
                   <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Preferred contact")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{t(form.contactMethod)}</dd></div>
                   <div className="flex min-w-0 justify-between gap-3 py-1"><dt className="shrink-0 text-slate-500">{t("Submitted")}</dt><dd className="min-w-0 break-words text-right font-semibold text-slate-800">{submittedAt}</dd></div>
                 </dl>
@@ -377,12 +380,33 @@ export default function Contact({ selectedService, onServiceChange }: Props) {
                   </div>
                   <div>
                     <label htmlFor="service" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">{t("What are you interested in?")} <span className="text-red-600" aria-hidden="true">*</span></label>
-                    <select id="service" data-error-field={errors.service ? "" : undefined} className={inputCls(errors.service)} value={form.service} onChange={(e) => { set("service", e.target.value); onServiceChange(e.target.value); }} aria-invalid={Boolean(errors.service)} aria-describedby={errors.service ? "err-service" : undefined}>
+                    <select id="service" data-error-field={errors.service ? "" : undefined} className={inputCls(errors.service)} value={form.service} onChange={(e) => { set("service", e.target.value); set("otherService", ""); onServiceChange(e.target.value); }} aria-invalid={Boolean(errors.service)} aria-describedby={errors.service ? "err-service" : undefined}>
                       <option value="">{t("Select a service…")}</option>
                       {SERVICE_OPTIONS.map((o) => <option key={o} value={o}>{t(o)}</option>)}
                     </select>
                     {errors.service && <p id="err-service" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.service || "")}</p>}
                   </div>
+                  {form.service === "Other" && (
+                    <div className="min-w-0 sm:col-span-2">
+                      <label htmlFor="otherService" className="mb-1.5 block text-[13.5px] font-semibold text-slate-700">
+                        {t("Which service do you need?")} <span className="text-red-600" aria-hidden="true">*</span>
+                      </label>
+                      <input
+                        id="otherService"
+                        name="otherService"
+                        type="text"
+                        required
+                        data-error-field={errors.otherService ? "" : undefined}
+                        className={inputCls(errors.otherService)}
+                        placeholder={t("Tell us which service you need…")}
+                        value={form.otherService}
+                        onChange={(e) => set("otherService", e.target.value)}
+                        aria-invalid={Boolean(errors.otherService)}
+                        aria-describedby={errors.otherService ? "err-otherService" : undefined}
+                      />
+                      {errors.otherService && <p id="err-otherService" className="mt-1.5 text-[12.5px] font-medium text-red-600">{t(errors.otherService)}</p>}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-5">
